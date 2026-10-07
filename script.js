@@ -116,7 +116,7 @@ form.addEventListener(
 
       const response =
         await fetch(
-          "/api/order",
+          "https://daksh-dry-cleaners-api.dakshdetwal10.workers.dev/api/order",
           {
             method: "POST",
 
