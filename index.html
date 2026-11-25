@@ -1,576 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="theme-color" content="#050b14">
-  <meta
-    name="description"
-    content="Premium laundry and dry cleaning with convenient pickup and delivery."
-  >
-
-  <title>Daksh Dry Cleaners — Fresh Looks Everyday</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071827">
+  <meta name="description" content="Daksh Dry Cleaners — thoughtful garment care, transparent pricing and convenient order requests.">
+  <title>Daksh Dry Cleaners | Fresh clothes, made simple</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet"
-  >
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-  <div class="cursor-glow"></div>
-
-  <!-- NAVBAR -->
-  <header class="nav">
-
+  <div class="announcement"><span class="sparkle">✦</span> CAREFULLY CLEANED. BEAUTIFULLY FINISHED. <span class="announcement-dot">•</span> PICKUP & DELIVERY BY ARRANGEMENT</div>
+  <header class="site-header">
     <a class="brand" href="#home" aria-label="Daksh Dry Cleaners home">
-
-      <span class="brand-mark">⌂</span>
-
-      <span>
-        <b>DAKSH</b>
-        <small>DRY CLEANERS</small>
-      </span>
-
+      <span class="brand-icon">D<span>✦</span></span>
+      <span class="brand-name">DAKSH <small>DRY CLEANERS</small></span>
     </a>
-
-    <nav class="desktop-nav">
-      <a href="#home">Home</a>
-      <a href="#services">Services</a>
-      <a href="#why">Why Us</a>
-      <a href="#order">Order</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#services">Services</a><a href="#pricing">Price list</a><a href="#about">Why Daksh</a><a href="#order" class="nav-cta">Request a pickup <span>↗</span></a>
     </nav>
-
-    <a class="btn btn-small" href="#order">
-      Place Order <span>↗</span>
-    </a>
-
-    <button class="menu-btn" aria-label="Open menu">
-      ☰
-    </button>
-
   </header>
 
-
   <main id="home">
-
-    <!-- HERO -->
-    <section class="hero">
-
-      <div class="hero-bg">
-
-        <div class="orb orb-a"></div>
-        <div class="orb orb-b"></div>
-
-        <div class="washer"></div>
-
-        <div class="water water-1"></div>
-        <div class="water water-2"></div>
-        <div class="water water-3"></div>
-
-        <div class="shirt">♢</div>
-
-        <div class="bubble b1"></div>
-        <div class="bubble b2"></div>
-        <div class="bubble b3"></div>
-        <div class="bubble b4"></div>
-
+    <section class="hero dark-section">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> EVERY GARMENT DESERVES CARE</p>
+        <h1>Fresh clothes.<br><em>Fresh confidence.</em></h1>
+        <p class="hero-lead">From everyday essentials to special-occasion outfits, give every piece the care it deserves.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#order">Request a pickup <span>→</span></a><a class="text-link" href="#pricing">Explore our prices <span>↘</span></a></div>
+        <div class="hero-proof"><div class="proof-mark">✧</div><p><strong>Care in every detail</strong><small>Clear prices. Thoughtful handling. A fresh finish.</small></p></div>
       </div>
-
-
-      <div class="hero-copy reveal">
-
-        <p class="eyebrow">
-          CLEANER CLOTHES • BRIGHTER DAYS
-        </p>
-
-        <h1>
-          Fresh<br>
-          Looks <em>Everyday</em>
-        </h1>
-
-        <p class="hero-sub">
-          Premium laundry & dry cleaning with convenient pickup and
-          delivery at your doorstep.
-        </p>
-
-        <div class="hero-actions">
-
-          <a class="btn" href="#order">
-            Place Order <span>→</span>
-          </a>
-
-          <a class="btn btn-ghost" href="tel:+91">
-            Call Now
-          </a>
-
-        </div>
-
-
-        <div class="rating">
-
-          <span class="avatars">
-            ● ● ● ●
-          </span>
-
-          <span>
-            <b>500+</b> Happy Customers
-            <br>
-            <strong>★★★★★</strong>
-          </span>
-
-        </div>
-
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-glow"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="fabric fabric-back"></div><div class="fabric fabric-mid"></div><div class="fabric fabric-front"><span>FRESH<br>FINISH</span></div>
+        <div class="art-stamp"><span>✦</span> THE CARE<br>YOU CAN FEEL</div>
+        <div class="art-caption">WASH <i>•</i> CARE <i>•</i> REPEAT</div>
       </div>
-
+      <div class="hero-bottom"><span>01 / GARMENT CARE</span><span>MADE SIMPLE <b>↓</b></span></div>
     </section>
 
-
-    <!-- SERVICES -->
-    <section class="services section" id="services">
-
-      <div class="section-head reveal">
-
-        <p class="eyebrow">
-          OUR SERVICES
-        </p>
-
-        <h2>
-          Care for every <em>thread.</em>
-        </h2>
-
+    <section class="service-strip light-section" id="services">
+      <div class="section-intro"><p class="eyebrow eyebrow-light">WHAT WE DO</p><h2>Good care.<br><em>Great feeling.</em></h2><p>Choose the service that suits your garment. Some delicate and bulky items may need inspection before a final quote.</p></div>
+      <div class="service-grid">
+        <article class="service-tile"><div class="service-icon iron-icon">⌁</div><div><span>01</span><h3>Steam & ironing</h3><p>A neat, crisp finish for your everyday and occasion wear.</p></div></article>
+        <article class="service-tile"><div class="service-icon wash-icon">≈</div><div><span>02</span><h3>Wash & iron</h3><p>A fresh clean and a ready-to-wear finish, handled with care.</p></div></article>
+        <article class="service-tile"><div class="service-icon dry-icon">✧</div><div><span>03</span><h3>Dry cleaning</h3><p>Special care for garments that need a gentler cleaning process.</p></div></article>
       </div>
-
-
-      <div class="service-list">
-
-        <!-- IRON -->
-        <article class="service-card reveal">
-
-          <div class="service-art iron-art">
-            ⌁
-          </div>
-
-          <div>
-
-            <span class="service-no">
-              01
-            </span>
-
-            <h3>
-              Iron
-            </h3>
-
-            <p>
-              Crisp & neat finish for everyday wear.
-            </p>
-
-            <strong>
-              ₹7.50 <small>/ cloth</small>
-            </strong>
-
-          </div>
-
-        </article>
-
-
-        <!-- WASH -->
-        <article class="service-card reveal">
-
-          <div class="service-art wash-art">
-            ◌
-          </div>
-
-          <div>
-
-            <span class="service-no">
-              02
-            </span>
-
-            <h3>
-              Wash
-            </h3>
-
-            <p>
-              Fresh, clean & hygienic wash.
-            </p>
-
-            <strong>
-              ₹20 <small>/ cloth</small>
-            </strong>
-
-          </div>
-
-        </article>
-
-
-        <!-- DRY CLEAN -->
-        <article class="service-card reveal">
-
-          <div class="service-art dry-art">
-            ◇
-          </div>
-
-          <div>
-
-            <span class="service-no">
-              03
-            </span>
-
-            <h3>
-              Dry Clean
-            </h3>
-
-            <p>
-              Gentle care for premium fabrics.
-            </p>
-
-            <strong>
-              ₹50 <small>/ cloth</small>
-            </strong>
-
-          </div>
-
-        </article>
-
-      </div>
-
     </section>
 
-
-    <!-- TICKER -->
-    <section class="ticker">
-
-      <div>
-        FREE PICKUP & DELIVERY
-        <span>•</span>
-        QUALITY CARE
-        <span>•</span>
-        ON-TIME SERVICE
-        <span>•</span>
-        FREE PICKUP & DELIVERY
+    <section class="pricing-section dark-section" id="pricing">
+      <div class="pricing-heading"><div><p class="eyebrow"><span></span> SIMPLE, TRANSPARENT RATES</p><h2>Our price <em>list.</em></h2></div><p>Prices are per piece unless mentioned otherwise. Items requiring inspection may have a different final price.</p></div>
+      <div class="price-controls">
+        <label class="search-wrap"><span>⌕</span><input id="priceSearch" type="search" placeholder="Search an item…"></label>
+        <div class="category-tabs" role="group" aria-label="Filter price list">
+          <button class="category-tab active" data-category="all">All items</button><button class="category-tab" data-category="men">Men</button><button class="category-tab" data-category="women">Women</button><button class="category-tab" data-category="home">Household</button>
+        </div>
       </div>
-
+      <div id="priceGroups" class="price-groups" aria-live="polite">
+        <section class="price-group" data-group="men"><div class="group-title"><span>01</span><h3>Men's regular wear</h3></div><div class="table-scroll"><table><thead><tr><th>Garment</th><th>Ironing</th><th>Wash + iron</th><th>Dry clean</th></tr></thead><tbody>
+          <tr><td>Shirt, T-shirt, formal pant, jeans, trouser, kurta, pajama, shorts</td><td>₹7.50</td><td>₹20</td><td>₹50</td></tr>
+        </tbody></table></div></section>
+        <section class="price-group" data-group="men"><div class="group-title"><span>02</span><h3>Men's heavy wear</h3></div><div class="table-scroll"><table><thead><tr><th>Garment</th><th>Ironing</th><th>Wash + iron</th><th>Dry clean</th></tr></thead><tbody>
+          <tr><td>Hoodie / Sweater</td><td>₹10</td><td>₹60</td><td>₹100</td></tr><tr><td>Jacket / Blazer</td><td>₹10</td><td>Unavailable</td><td>₹100</td></tr><tr><td>Coat</td><td>₹10*</td><td>Unavailable</td><td>₹100</td></tr><tr><td>Waistcoat</td><td>₹10</td><td>Unavailable</td><td>₹50</td></tr><tr><td>Track pants</td><td>₹10</td><td>₹20</td><td>₹50</td></tr>
+        </tbody></table></div><p class="table-note">*Coat ironing price is provisional and should be confirmed at the shop.</p></section>
+        <section class="price-group" data-group="women"><div class="group-title"><span>03</span><h3>Women's regular wear</h3></div><div class="table-scroll"><table><thead><tr><th>Garment</th><th>Ironing</th><th>Wash + iron</th><th>Dry clean</th></tr></thead><tbody>
+          <tr><td>Kurti, leggings, salwar, dupatta, top, skirt, women's jeans, cardigan</td><td>₹7.50</td><td>₹20</td><td>₹50</td></tr><tr><td>Blouse</td><td>₹5</td><td>₹20</td><td>₹50</td></tr>
+        </tbody></table></div></section>
+        <section class="price-group" data-group="women"><div class="group-title"><span>04</span><h3>Women's special wear</h3></div><div class="table-scroll"><table><thead><tr><th>Garment</th><th>Ironing</th><th>Wash + iron</th><th>Dry clean</th></tr></thead><tbody>
+          <tr><td>Saree <small>100% steam iron</small></td><td>₹20</td><td>Unavailable</td><td>₹100</td></tr><tr><td>Lehenga</td><td>₹20</td><td>Inspection</td><td>₹200*</td></tr><tr><td>Gown</td><td>₹30</td><td>Inspection</td><td>₹200*</td></tr><tr><td>Suit (2-piece)</td><td>₹15</td><td>₹20**</td><td>₹50**</td></tr><tr><td>Anarkali suit + dupatta</td><td>₹20</td><td>Ask for quote</td><td>₹150</td></tr><tr><td>Women's jacket</td><td>₹10</td><td>Ask for quote</td><td>₹100</td></tr>
+        </tbody></table></div><p class="table-note">*Regular dry-cleaning price; final price after inspection. **Wash and dry-clean rates follow the regular men's rates, as recorded.</p></section>
+        <section class="price-group" data-group="home"><div class="group-title"><span>05</span><h3>Household essentials</h3></div><div class="table-scroll"><table><thead><tr><th>Item</th><th>Ironing</th><th>Wash + iron</th><th>Dry clean</th></tr></thead><tbody>
+          <tr><td>Single bedsheet</td><td>₹20</td><td>₹40</td><td>₹100</td></tr><tr><td>Double bedsheet</td><td>₹20</td><td>₹50</td><td>₹100</td></tr><tr><td>Pillow cover</td><td>₹5</td><td>₹15</td><td>₹30</td></tr><tr><td>Single / double curtain <small>per piece</small></td><td>₹50</td><td>Unavailable</td><td>₹100</td></tr><tr><td>Towel</td><td>₹10</td><td>₹20</td><td>₹50</td></tr><tr><td>Single blanket / quilt</td><td>Unavailable</td><td>Unavailable</td><td>₹250</td></tr><tr><td>Double blanket / quilt</td><td>Unavailable</td><td>Unavailable</td><td>₹300</td></tr>
+        </tbody></table></div></section>
+      </div>
+      <p class="pricing-footnote"><span>✦</span> Need help choosing a service? Send us an order request and we'll confirm the details with you.</p>
     </section>
 
-
-    <!-- WHY US -->
-    <section class="why section" id="why">
-
-      <div class="why-visual reveal">
-
-        <div class="basket">
-
-          <div class="cloth c1"></div>
-          <div class="cloth c2"></div>
-          <div class="cloth c3"></div>
-
-        </div>
-
-        <span class="badge">
-          ✦ Clean clothes
-          <br>
-          <b>Happier you</b>
-        </span>
-
-      </div>
-
-
-      <div class="why-copy reveal">
-
-        <p class="eyebrow">
-          WHY CHOOSE US
-        </p>
-
-        <h2>
-          More than just
-          <br>
-          <em>a laundry service.</em>
-        </h2>
-
-        <p>
-          We combine careful handling with a simple ordering experience,
-          so your clothes come back fresh and ready.
-        </p>
-
-
-        <div class="feature-grid">
-
-          <div>
-            ✦
-            <b>Quality Care</b>
-            <small>Professional handling</small>
-          </div>
-
-          <div>
-            ₹
-            <b>Fair Pricing</b>
-            <small>Simple transparent rates</small>
-          </div>
-
-          <div>
-            ✓
-            <b>Trusted Service</b>
-            <small>Built for convenience</small>
-          </div>
-
-          <div>
-            ◷
-            <b>On-Time</b>
-            <small>Pickup & delivery</small>
-          </div>
-
-        </div>
-
-      </div>
-
+    <section class="promise-section light-section" id="about">
+      <div class="promise-art"><div class="promise-circle"><span>✦</span><strong>CARE<br>IN EVERY<br>FIBRE</strong><small>DAKSH DRY CLEANERS</small></div><div class="promise-spark spark-a">✧</div><div class="promise-spark spark-b">✦</div></div>
+      <div class="promise-copy"><p class="eyebrow eyebrow-light">THE DAKSH DIFFERENCE</p><h2>Clothes matter.<br><em>So does their care.</em></h2><p>We make garment care straightforward: clear service options, transparent starting prices and attention to the pieces you trust us with.</p><div class="promise-points"><div><b>01</b><span><strong>Clear pricing</strong><small>Know the listed rate before you place a request.</small></span></div><div><b>02</b><span><strong>Careful handling</strong><small>Special and delicate items can be checked first.</small></span></div><div><b>03</b><span><strong>Easy requests</strong><small>Tell us what you need and our team can confirm next steps.</small></span></div></div></div>
     </section>
 
-
-    <!-- ORDER -->
-    <section class="order section" id="order">
-
-      <div class="order-intro reveal">
-
-        <p class="eyebrow">
-          READY WHEN YOU ARE
-        </p>
-
-        <h2>
-          Place your
-          <br>
-          <em>order.</em>
-        </h2>
-
-        <p>
-          Fill the form. We'll receive the details directly and
-          contact you on WhatsApp.
-        </p>
-
-      </div>
-
-
-      <!-- ORDER FORM -->
-      <form id="orderForm" class="order-form reveal">
-
-        <div class="form-row">
-
-          <label>
-            Full name
-
-            <input
-              name="name"
-              required
-              placeholder="Your name"
-            >
-
-          </label>
-
-
-          <label>
-            Email
-
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="you@example.com"
-            >
-
-          </label>
-
-        </div>
-
-
-        <div class="form-row">
-
-          <label>
-            Mobile number
-
-            <input
-              name="mobile"
-              required
-              inputmode="tel"
-              placeholder="+91 XXXXX XXXXX"
-            >
-
-          </label>
-
-
-          <label>
-            Item type
-
-            <select name="itemType" required>
-
-              <option value="">
-                Choose service
-              </option>
-
-              <option>
-                Iron
-              </option>
-
-              <option>
-                Wash
-              </option>
-
-              <option>
-                Dry Clean
-              </option>
-
-              <option>
-                Other
-              </option>
-
-            </select>
-
-          </label>
-
-        </div>
-
-
-        <div class="form-row">
-
-          <label>
-            Quantity
-
-            <input
-              name="quantity"
-              type="number"
-              min="1"
-              step="1"
-              required
-              placeholder="e.g. 5"
-            >
-
-          </label>
-
-
-          <label>
-
-            Packaging
-
-            <span class="optional">
-              optional • ₹4/order
-            </span>
-
-            <select name="packaging">
-
-              <option value="No">
-                No
-              </option>
-
-              <option value="Yes">
-                Yes — +₹4
-              </option>
-
-            </select>
-
-          </label>
-
-        </div>
-
-
-        <label>
-
-          Pickup / delivery address
-
-          <textarea
-            name="address"
-            required
-            rows="3"
-            placeholder="Enter your address"
-          ></textarea>
-
-        </label>
-
-
-        <!-- TOTAL -->
-        <div class="total-box">
-
-          <span>
-            Estimated total
-          </span>
-
-          <strong id="total">
-            ₹0.00
-          </strong>
-
-        </div>
-
-
-        <button
-          class="btn submit"
-          type="submit"
-        >
-          Send Order <span>→</span>
-        </button>
-
-
-        <p class="form-note">
-          No signup. No login. Your order details are sent securely
-          to our team.
-        </p>
-
-
-        <div
-          id="formMessage"
-          class="form-message"
-          role="status"
-        ></div>
-
+    <section class="order-section dark-section" id="order">
+      <div class="order-copy"><p class="eyebrow"><span></span> LET'S GET THINGS FRESH</p><h2>Ready for a<br><em>fresh start?</em></h2><p>Send a pickup or service request. Our team will contact you to confirm availability, garment details and the final price.</p><div class="order-contact"><span>✦</span><p><strong>Personal confirmation</strong><small>Your request is not confirmed until our team contacts you.</small></p></div></div>
+      <form id="orderForm" class="order-form">
+        <div class="form-heading"><span>YOUR REQUEST</span><small>Fields marked * are required</small></div>
+        <div class="form-row"><label>Full name *<input name="name" autocomplete="name" required placeholder="Your name"></label><label>Mobile number *<input name="mobile" autocomplete="tel" inputmode="tel" required placeholder="+91 XXXXX XXXXX"></label></div>
+        <div class="form-row"><label>Garment / item *<input name="itemType" required placeholder="e.g. 3 shirts, 1 bedsheet"></label><label>Service *<select name="service" required><option value="">Choose a service</option><option>Ironing</option><option>Washing + ironing</option><option>Dry cleaning</option><option>Need advice</option></select></label></div>
+        <div class="form-row"><label>Quantity *<input name="quantity" type="number" min="1" step="1" required placeholder="Number of pieces"></label><label>Preferred pickup date<input name="pickupDate" type="date"></label></div>
+        <label>Pickup address *<textarea name="address" rows="3" required placeholder="Enter your complete address"></textarea></label>
+        <label>Anything we should know? <textarea name="notes" rows="2" placeholder="Special instructions or garment details (optional)"></textarea></label>
+        <button class="button button-primary submit-button" type="submit">Send request <span>→</span></button>
+        <p class="form-disclaimer">We'll contact you to confirm your request. Prices for inspected items are confirmed separately.</p>
+        <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
       </form>
-
     </section>
-
   </main>
 
-
-  <!-- FOOTER -->
-  <footer>
-
-    <div>
-
-      <b>
-        DAKSH DRY CLEANERS
-      </b>
-
-      <p>
-        Fresh looks. Simple service.
-      </p>
-
-    </div>
-
-
-    <div>
-
-      <a href="#services">
-        Services
-      </a>
-
-      <a href="#order">
-        Place Order
-      </a>
-
-    </div>
-
-
-    <small>
-      © <span id="year"></span>
-      Daksh Dry Cleaners
-    </small>
-
-  </footer>
-
-
+  <footer class="site-footer"><a class="brand footer-brand" href="#home"><span class="brand-icon">D<span>✦</span></span><span class="brand-name">DAKSH <small>DRY CLEANERS</small></span></a><p>Fresh clothes. Thoughtful care.</p><div class="footer-links"><a href="#services">Services</a><a href="#pricing">Price list</a><a href="#order">Place a request</a></div><small>© <span id="year"></span> Daksh Dry Cleaners. All rights reserved.</small></footer>
   <script src="script.js"></script>
-
 </body>
 </html>
