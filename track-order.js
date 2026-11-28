@@ -17,12 +17,13 @@
     if(text!==undefined) element.textContent=text;
     return element;
   }
-  function renderOrder(order) {
+  function renderOrder(order, customerName) {
     const card=node("article","track-order");
     const top=node("div","track-order-top");
     const left=node("div");
-    const id=String(order.id || "").replace(/-/g,"").slice(0,8).toUpperCase();
-    left.append(node("div","track-reference","ORDER REF · DAK-"+id));
+    const id=order.order_number || ("DAK-"+new Date(order.created_at).getFullYear()+"-"+String(order.id || "").replace(/-/g,"").slice(0,6).toUpperCase());
+    left.append(node("div","track-reference","ORDER ID · "+id));
+    left.append(node("div","track-customer","Customer · "+customerName));
     left.append(node("h3","",order.item_description || "Laundry order"));
     const statusValue=normalise(order.status || "pending");
     const statusLabel=stages.find(stage=>stage[0]===statusValue)?.[1] || (order.status || "Pending");
@@ -31,7 +32,9 @@
     const meta=node("div","track-meta");
     meta.append(node("span","", "Submitted: "+dateText(order.created_at)));
     meta.append(node("span","", "Service: "+(order.service || "To be confirmed")));
-    meta.append(node("span","", "Quantity: "+(order.quantity || 0)));
+    meta.append(node("span","", "Quantity: "+(order.quantity || 0)+" pieces"));
+    if(order.total_price !== null && order.total_price !== undefined) meta.append(node("span","track-price","Total price: ₹"+Number(order.total_price).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})));
+    if(order.expected_completion_date) meta.append(node("span","track-completion","Expected completion: "+dateText(order.expected_completion_date)));
     if(order.pickup_date) meta.append(node("span","", "Pickup: "+dateText(order.pickup_date)));
     card.append(meta);
     const journey=node("div","journey");
@@ -72,7 +75,7 @@
     if(sessionError) throw sessionError;
     if(!session) { window.location.replace("login.html?next=track-order.html"); return; }
     const {data,error}=await supabase.from("orders")
-      .select("id,item_description,service,quantity,pickup_date,status,created_at,address,notes")
+      .select("id,order_number,user_id,item_description,service,quantity,pickup_date,status,created_at,address,notes,total_price,expected_completion_date")
       .eq("user_id",session.user.id).order("created_at",{ascending:false}).limit(50);
     if(error) throw error;
     container.replaceChildren();
@@ -84,7 +87,9 @@
       const link=node("a","track-button","Place your first order →"); link.href="dashboard.html#newOrder";
       empty.append(link); container.append(empty); return;
     }
-    data.forEach(order=>container.append(renderOrder(order)));
+    const {data:profile}=await supabase.from("profiles").select("full_name").eq("id",session.user.id).maybeSingle();
+    const customerName=profile?.full_name || session.user.email || "Customer";
+    data.forEach(order=>container.append(renderOrder(order,customerName)));
   }
   init().catch(error=>{
     console.error("Order tracking error:",error);
