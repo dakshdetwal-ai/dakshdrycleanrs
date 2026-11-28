@@ -131,3 +131,12 @@ const siteHeader = document.querySelector(".site-header");
 function updateHeaderOnScroll(){siteHeader?.classList.toggle("is-scrolled", window.scrollY > 12)}
 window.addEventListener("scroll", updateHeaderOnScroll, {passive:true});
 updateHeaderOnScroll();
+
+
+// Service card arrows take customers to the order form with the chosen service preselected.
+document.querySelectorAll(".service-arrow[data-service]").forEach(link => {
+  link.addEventListener("click", () => {
+    const serviceSelect = document.querySelector('#orderForm select[name="itemType"]');
+    if (serviceSelect) serviceSelect.value = link.dataset.service;
+  });
+});
