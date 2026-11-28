@@ -124,3 +124,10 @@ if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-mot
 } else {
   revealTargets.forEach(element => element.classList.add("is-visible"));
 }
+
+
+// Add a subtle shadow to the sticky navigation once the page scrolls.
+const siteHeader = document.querySelector(".site-header");
+function updateHeaderOnScroll(){siteHeader?.classList.toggle("is-scrolled", window.scrollY > 12)}
+window.addEventListener("scroll", updateHeaderOnScroll, {passive:true});
+updateHeaderOnScroll();
