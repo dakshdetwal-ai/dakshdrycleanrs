@@ -1,3 +1,5 @@
+const WORKER_ORDER_URL = "https://daksh-dry-cleaners-api.dakshdetwal10.workers.dev/api/order";
+
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 menuToggle?.addEventListener("click", () => {
@@ -33,71 +35,67 @@ categoryTabs.forEach(button => button.addEventListener("click", () => {
 }));
 priceSearch?.addEventListener("input", filterPrices);
 
-// Guest pickup requests use the same Supabase orders table as dashboard requests.
-// RLS deliberately requires an authenticated account, so guest users are directed to sign in.
+// Public pickup requests go through the Cloudflare Worker.
+// This keeps ordering simple for customers: no account is required.
 const orderForm = document.getElementById("orderForm");
 const formMessage = document.getElementById("formMessage");
 
-if (orderForm) {
+if (orderForm && formMessage) {
   orderForm.addEventListener("submit", async event => {
     event.preventDefault();
-    const submitButton = orderForm.querySelector('button[type="submit"]');
-    const show = (message, error = false) => {
+    const button = orderForm.querySelector('button[type="submit"]');
+    const showMessage = (message, isError = false) => {
       formMessage.textContent = message;
-      formMessage.style.color = error ? "#b54747" : "#167d72";
+      formMessage.style.color = isError ? "#b54747" : "#167d72";
     };
 
-    const config = window.dakshSupabase;
-    if (!config) {
-      show("The order service is unavailable right now. Please try again later.", true);
+    const data = Object.fromEntries(new FormData(orderForm).entries());
+    const quantity = Number(data.quantity);
+    const mobileDigits = String(data.mobile || "").replace(/\D/g, "");
+
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      showMessage("Please enter a valid quantity.", true);
+      return;
+    }
+    if (mobileDigits.length < 10 || mobileDigits.length > 13) {
+      showMessage("Please enter a valid mobile number.", true);
       return;
     }
 
-    submitButton.disabled = true;
-    submitButton.textContent = "Sending request…";
-    show("Checking your customer account…");
+    button.disabled = true;
+    button.textContent = "Sending request…";
+    showMessage("Sending your order request…");
 
     try {
-      const { data: { session }, error: sessionError } = await config.auth.getSession();
-      if (sessionError) throw sessionError;
-      if (!session) {
-        const next = new URL("login.html", window.location.href);
-        next.searchParams.set("next", "dashboard.html#newOrder");
-        show("Please sign in to submit a pickup request. Redirecting you to sign in…");
-        window.location.href = next.toString();
-        return;
+      const response = await fetch(WORKER_ORDER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(data.name || "").trim(),
+          email: String(data.email || "").trim().toLowerCase(),
+          mobile: String(data.mobile || "").trim(),
+          itemType: data.itemType,
+          quantity,
+          packaging: data.packaging,
+          address: String(data.address || "").trim(),
+          notes: String(data.notes || "").trim()
+        })
+      });
+
+      let result = {};
+      try { result = await response.json(); } catch (_) {}
+      if (!response.ok || result.success === false) {
+        throw new Error(result.error || "We couldn't send your request. Please try again.");
       }
 
-      const data = Object.fromEntries(new FormData(orderForm).entries());
-      const qty = Number(data.quantity);
-      if (!Number.isInteger(qty) || qty < 1) throw new Error("Enter a valid quantity.");
-
-      const serviceMap = {
-        "Ironing": "Ironing",
-        "Washing + ironing": "Washing + ironing",
-        "Dry cleaning": "Dry cleaning",
-        "Need advice": "Need advice"
-      };
-      const item = String(data.itemType || "").trim();
-      const { error } = await config.from("orders").insert({
-        user_id: session.user.id,
-        item_description: item,
-        service: serviceMap[data.service] || data.service,
-        quantity: qty,
-        pickup_date: data.pickupDate || null,
-        address: String(data.address || "").trim(),
-        notes: [data.notes ? String(data.notes).trim() : "", "Customer: " + String(data.name || "").trim(), "Phone: " + String(data.mobile || "").trim()].filter(Boolean).join("\\n")
-      });
-      if (error) throw error;
-
-      show("Request received! You can track it in your customer dashboard. Our team will contact you to confirm details.");
+      showMessage("Order request received! We'll contact you on WhatsApp to confirm the details.");
       orderForm.reset();
     } catch (error) {
-      console.error("Order request error:", error);
-      show(error.message || "We couldn't send your request. Please try again.", true);
+      console.error("Pickup request failed:", error);
+      showMessage(error.message || "Something went wrong. Please try again or call the shop.", true);
     } finally {
-      submitButton.disabled = false;
-      submitButton.innerHTML = 'Send request <span>→</span>';
+      button.disabled = false;
+      button.innerHTML = 'Place order <span>→</span>';
     }
   });
 }
