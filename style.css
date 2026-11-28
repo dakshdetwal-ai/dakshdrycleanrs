@@ -19,3 +19,49 @@ a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}
 @media(max-width:850px){.hero{min-height:590px}.hero h1{font-size:57px}.hero-art{transform:scale(.85);margin-left:-20px}.service-strip{gap:35px}.promise-section{gap:45px}.order-section{gap:40px}.pricing-heading h2{font-size:49px}}
 @media(max-width:680px){.announcement{font-size:8px;letter-spacing:.1em}.site-header{height:68px;padding:0 18px}.menu-toggle{display:block}.main-nav{display:none;position:absolute;top:62px;left:10px;right:10px;background:#0d2639;border:1px solid #24485d;border-radius:16px;padding:17px;flex-direction:column;align-items:stretch;gap:18px}.main-nav.open{display:flex}.nav-cta{text-align:center}.hero{display:flex;flex-direction:column;align-items:flex-start;min-height:0;padding:78px 22px 50px;overflow:hidden}.hero-copy{width:100%}.hero h1{font-size:clamp(46px,12vw,65px);margin:18px 0}.hero-lead{font-size:14px;max-width:360px}.hero-actions{gap:17px;flex-wrap:wrap}.hero-proof{margin-top:30px}.hero-art{width:100%;height:310px;transform:scale(.78);transform-origin:center top;margin:28px 0 -50px}.art-stamp{right:0}.hero-bottom{position:static;width:100%;margin-top:20px}.service-strip,.promise-section,.order-section{padding:70px 20px;grid-template-columns:1fr;gap:35px}.section-intro h2{font-size:39px}.service-tile{grid-template-columns:58px 1fr;padding:14px}.service-icon{width:54px;height:54px}.pricing-section{padding:70px 18px}.pricing-heading{display:block}.pricing-heading h2{font-size:47px}.pricing-heading>p{margin-top:14px}.price-controls{display:block;margin:25px 0 17px}.search-wrap{width:100%;margin-bottom:12px}.category-tabs{gap:5px}.category-tab{padding:8px 11px}.price-groups{grid-template-columns:1fr}.promise-art{min-height:320px}.promise-copy h2{font-size:39px}.order-copy h2{font-size:49px}.order-form{padding:20px}.form-row{grid-template-columns:1fr;gap:0}.site-footer{padding:30px 20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}.site-footer>p{grid-column:2;grid-row:1;text-align:right}.footer-links{grid-column:1/-1;flex-wrap:wrap}.site-footer>small{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+
+/* Motion direction: cinematic, fluid and lightweight */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.12;background-image:radial-gradient(#8cecf0 0.7px,transparent .7px);background-size:28px 28px;mask-image:linear-gradient(to bottom,black,transparent 72%)}
+.announcement{position:relative;overflow:hidden}
+.announcement::after{content:"";position:absolute;inset:0 auto 0 -35%;width:25%;background:linear-gradient(90deg,transparent,#ffffff22,transparent);transform:skewX(-20deg);animation:announcementSweep 7s ease-in-out infinite}
+.hero{overflow:hidden}
+.hero::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(115deg,transparent 20%,#1aa3b20b 50%,transparent 80%);background-size:200% 100%;animation:ambientSweep 12s linear infinite}
+.hero-copy>*{animation:heroRise .85s both;opacity:0}
+.hero-copy .eyebrow{animation-delay:.12s}.hero-copy h1{animation-delay:.24s}.hero-copy .hero-lead{animation-delay:.38s}.hero-copy .hero-actions{animation-delay:.5s}.hero-copy .hero-proof{animation-delay:.62s}
+.hero-art{animation:artAppear 1.2s .2s both}
+.art-glow{animation:glowPulse 6s ease-in-out infinite alternate}
+.orbit-one{animation:orbitDrift 18s linear infinite}
+.orbit-two{animation:orbitDrift 24s linear infinite reverse}
+.fabric-back{animation:fabricFloat 7s ease-in-out infinite}
+.fabric-mid{animation:fabricFloat 8s ease-in-out -2s infinite reverse}
+.fabric-front{animation:fabricFloat 6s ease-in-out -1s infinite}
+.art-stamp{animation:stampFloat 5s ease-in-out infinite}
+.button-primary{position:relative;overflow:hidden;isolation:isolate}
+.button-primary::after{content:"";position:absolute;inset:-50% auto -50% -45%;width:35%;z-index:-1;background:#ffffff70;transform:skewX(-24deg);transition:left .55s ease}
+.button-primary:hover::after{left:125%}
+.service-tile,.price-group,.promise-art,.order-form{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s}
+.service-tile:hover{transform:translateY(-7px) scale(1.015);box-shadow:0 20px 45px #15394a16;border-color:#b7e6e7}
+.service-icon{transition:transform .35s}.service-tile:hover .service-icon{transform:rotate(-9deg) scale(1.1)}
+.price-group:hover{transform:translateY(-4px);border-color:#3a8292;box-shadow:0 16px 35px #0002}
+.promise-art::before{animation:ringPulse 8s ease-in-out infinite}.promise-art::after{animation:ringPulse 8s ease-in-out -4s infinite}
+.promise-circle{animation:promiseFloat 6s ease-in-out infinite}
+.promise-spark{animation:sparkTwinkle 3.5s ease-in-out infinite alternate}.spark-b{animation-delay:-1.7s}
+.order-form{animation:formGlow 7s ease-in-out infinite}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.75,.25,1)}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.12s}.reveal-delay-2{transition-delay:.24s}.reveal-delay-3{transition-delay:.36s}
+@keyframes heroRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes artAppear{from{opacity:0;transform:translateY(25px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes fabricFloat{0%,100%{translate:0 0}50%{translate:0 -13px}}
+@keyframes stampFloat{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -10px;rotate:5deg}}
+@keyframes orbitDrift{from{rotate:0deg}to{rotate:360deg}}
+@keyframes glowPulse{from{transform:scale(.88);opacity:.22}to{transform:scale(1.15);opacity:.48}}
+@keyframes ambientSweep{from{background-position:100% 0}to{background-position:-100% 0}}
+@keyframes announcementSweep{0%,65%{left:-35%}100%{left:130%}}
+@keyframes ringPulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.05);opacity:1}}
+@keyframes promiseFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes sparkTwinkle{from{transform:scale(.75) rotate(-15deg);opacity:.45}to{transform:scale(1.15) rotate(15deg);opacity:1}}
+@keyframes formGlow{0%,100%{box-shadow:0 25px 70px #0002}50%{box-shadow:0 25px 70px #21b6c21c}}
+@media(max-width:680px){.hero-art{animation:none}.fabric-back,.fabric-mid,.fabric-front{animation-duration:9s}.service-tile:hover,.price-group:hover{transform:none}.reveal{transform:translateY(16px)}}
+@media(prefers-reduced-motion:reduce){.hero-copy>*,.hero-art,.art-glow,.orbit-one,.orbit-two,.fabric-back,.fabric-mid,.fabric-front,.art-stamp,.promise-circle,.promise-spark,.promise-art::before,.promise-art::after,.order-form,.announcement::after{animation:none!important}.reveal{opacity:1;transform:none;transition:none}}
