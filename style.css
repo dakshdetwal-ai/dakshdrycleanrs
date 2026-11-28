@@ -112,3 +112,20 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;op
 .service-arrow:hover{background:#e2f8f5;color:#009e68;transform:translate(2px,-2px)}
 .service-list .service-card:hover{transform:none;box-shadow:inset 3px 0 #17c7c4;background:#fbfefe}
 @media(max-width:600px){.service-list .service-card{grid-template-columns:70px minmax(0,1fr) 24px;gap:12px;min-height:108px;padding:13px 12px}.service-photo{width:68px;height:68px;border-radius:14px}.service-card-copy h3{font-size:15px}.service-price{font-size:20px}.service-card-copy p{font-size:11px}}
+
+/* Compact pricing cards with clearer garment-to-price scanning */
+.price-groups{align-items:start;gap:12px}
+.price-group{height:fit-content;align-self:start;padding:15px 16px;border-radius:14px}
+.group-title{margin-bottom:10px;gap:10px}
+.group-title h3{font-size:15px;line-height:1.35;margin:0}
+.table-scroll{border-radius:8px}
+table{min-width:420px}
+th{font-size:10px;padding:9px 9px;line-height:1.35}
+td{font-size:12px;padding:9px 9px;line-height:1.45}
+td:first-child{padding-right:14px}
+td:not(:first-child){padding-left:12px}
+td small{font-size:10px;margin-top:4px}
+.table-note{font-size:10px;margin-top:8px}
+.price-no-results{margin:20px 0;padding:18px;border:1px dashed #3a6074;border-radius:12px;color:#b7cbd5;text-align:center;font-size:13px}
+.price-no-results[hidden]{display:none}
+@media(max-width:680px){.pricing-section{padding:68px 18px}.pricing-heading h2{font-size:clamp(36px,9vw,48px)}.price-groups{grid-template-columns:1fr}.price-group{padding:14px}.price-controls{align-items:stretch;flex-direction:column}.search-wrap{width:100%}}
