@@ -11,7 +11,9 @@
     button.disabled = busy;
     button.textContent = busy ? "Please wait…" : label;
   };
-  const redirectTo = path => new URL(path, window.location.origin).toString();
+  // Always send authentication emails back to the production website, never localhost.
+  const PRODUCTION_ORIGIN = "https://dakshdrycleaners.detwal.in";
+  const redirectTo = path => new URL(path, PRODUCTION_ORIGIN + "/").toString();
 
   async function currentSession() {
     const { data, error } = await supabase.auth.getSession();
