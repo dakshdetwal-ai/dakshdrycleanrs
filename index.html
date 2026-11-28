@@ -114,7 +114,7 @@
       <form id="orderForm" class="order-form">
         <div class="form-heading"><span>YOUR REQUEST</span><small>Fields marked * are required</small></div>
         <div class="form-row"><label>Full name *<input name="name" autocomplete="name" required placeholder="Your name"></label><label>Email address <span class="optional-label">(optional)</span><input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label></div>
-        <div class="form-row"><label>Mobile number *<input name="mobile" autocomplete="tel" inputmode="tel" required placeholder="+91 XXXXX XXXXX"></label><label>Packaging <span class="optional-label">(optional)</span><select name="packaging"><option value="">No preference</option><option value="No">No packaging</option><option value="Yes">Add packaging (+₹4 per order)</option></select></label></div>
+        <div class="form-row"><label>Mobile number *<input name="mobile" autocomplete="tel" inputmode="tel" required placeholder="+91 XXXXX XXXXX"></label><label>Packaging *<select name="packaging" required><option value="">Choose packaging</option><option value="Yes">Yes — add packaging (₹1 per cloth)</option><option value="No">No — I will provide a carry bag</option></select><small id="packagingWarning" class="packaging-warning" hidden>As you don’t want packaging, please provide a carry bag. Otherwise, packaging will be processed with appropriate charges.</small></label></div>
         <div class="garment-builder">
           <div class="garment-builder-heading"><div><strong>Your garments</strong><small>Add each garment type and the service it needs.</small></div><span class="garment-count" id="garmentCount">1 item</span></div>
           <div id="garmentEntries" class="garment-entries">
