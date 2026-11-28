@@ -203,3 +203,6 @@ mark.price-match{background:#b7f5dd;color:#063b2a;border-radius:3px;padding:0 2p
 .order-trust-indicators strong{display:block;color:#284c5d;font-size:11px;font-weight:800}
 .order-trust-indicators small{display:block;margin-top:2px;color:#718995;font-size:10px;line-height:1.4}
 @media(max-width:600px){.order-trust-indicators{display:grid;gap:10px}}
+
+.packaging-warning{display:block;margin-top:8px;padding:9px 10px;border-left:3px solid #d58a24;border-radius:6px;background:#fff4df;color:#87530e;font-size:10px;line-height:1.5;font-weight:600}
+.packaging-warning[hidden]{display:none}
