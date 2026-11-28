@@ -44,3 +44,17 @@ body::before{content:"";position:fixed;z-index:-1;inset:-20%;pointer-events:none
 @keyframes authCardEnter{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:760px){.auth-brand-logo{width:165px}.auth-card{padding:25px}.auth-story .auth-perks{display:grid;gap:10px;margin-top:18px}}
 @media(prefers-reduced-motion:reduce){body::before,.auth-card{animation:none}}
+
+/* Signup page refinements */
+.signup-card{padding:27px 29px;max-width:470px;animation:authCardEnter .65s cubic-bezier(.2,.75,.25,1) both}
+.signup-card h2{font-size:25px}
+.signup-card .auth-subtitle{margin-bottom:16px}
+.signup-card .auth-form label{margin-bottom:9px}
+.signup-card .auth-form input{padding:11px 12px}
+.signup-card .auth-two{gap:10px}
+.signup-card .auth-check{margin-top:2px}
+.signup-card .auth-button{margin-top:4px}
+.auth-brand-logo{width:180px;max-width:42vw;height:auto;object-fit:contain}
+@media(max-width:760px){.signup-card{padding:24px;width:100%}.auth-brand-logo{width:160px}}
+@media(max-width:390px){.signup-card{padding:21px}}
+@media(prefers-reduced-motion:reduce){.signup-card{animation:none}}
