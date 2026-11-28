@@ -394,24 +394,113 @@
       }
     });
 
-    $("#customerOrderForm").addEventListener("submit", async event => {
+    const customerOrderForm = $("#customerOrderForm");
+    const garmentRows = $("#garmentRows");
+    const garmentPricing = {
+      "Shirt / T-shirt / regular trouser": {"Ironing":7.5,"Wash + Iron":20,"Dry Cleaning":50},
+      "Hoodie / Sweater": {"Ironing":10,"Wash + Iron":60,"Dry Cleaning":100},
+      "Jacket / Blazer": {"Ironing":10,"Wash + Iron":null,"Dry Cleaning":100},
+      "Coat": {"Ironing":10,"Wash + Iron":null,"Dry Cleaning":100},
+      "Waistcoat": {"Ironing":10,"Wash + Iron":null,"Dry Cleaning":50},
+      "Track pants": {"Ironing":10,"Wash + Iron":20,"Dry Cleaning":50},
+      "Kurti / Leggings / Salwar / Dupatta / Top / Skirt": {"Ironing":7.5,"Wash + Iron":20,"Dry Cleaning":50},
+      "Blouse": {"Ironing":5,"Wash + Iron":20,"Dry Cleaning":50},
+      "Saree": {"Ironing":20,"Wash + Iron":null,"Dry Cleaning":100},
+      "Lehenga": {"Ironing":20,"Wash + Iron":"inspection","Dry Cleaning":200},
+      "Gown": {"Ironing":30,"Wash + Iron":"inspection","Dry Cleaning":200},
+      "Suit (2-piece)": {"Ironing":15,"Wash + Iron":20,"Dry Cleaning":50},
+      "Anarkali suit + dupatta": {"Ironing":20,"Wash + Iron":"quote","Dry Cleaning":150},
+      "Women's jacket": {"Ironing":10,"Wash + Iron":"quote","Dry Cleaning":100},
+      "Single bedsheet": {"Ironing":20,"Wash + Iron":40,"Dry Cleaning":100},
+      "Double bedsheet": {"Ironing":20,"Wash + Iron":50,"Dry Cleaning":100},
+      "Pillow cover": {"Ironing":5,"Wash + Iron":15,"Dry Cleaning":30},
+      "Curtain": {"Ironing":50,"Wash + Iron":null,"Dry Cleaning":100},
+      "Towel": {"Ironing":10,"Wash + Iron":20,"Dry Cleaning":50},
+      "Single blanket / quilt": {"Ironing":null,"Wash + Iron":null,"Dry Cleaning":250},
+      "Double blanket / quilt": {"Ironing":null,"Wash + Iron":null,"Dry Cleaning":300}
+    };
+    function refreshGarmentEstimate() {
+      let total = 0, priced = false, quote = false, unavailable = false;
+      garmentRows.querySelectorAll("[data-garment-row]").forEach(row => {
+        const garment = $("[data-garment]", row).value;
+        const service = $("[data-service]", row).value;
+        const quantity = Number($("[data-quantity]", row).value);
+        const line = $("[data-line-price]", row);
+        const price = garmentPricing[garment]?.[service];
+        if (!garment || !service || !Number.isInteger(quantity) || quantity < 1) line.textContent = "Choose a garment, service and quantity.";
+        else if (price === null) { line.textContent = "This service is unavailable for this garment."; unavailable = true; }
+        else if (price === "inspection" || price === "quote" || price === undefined || service === "Need advice" || garment === "Other / need advice") {
+          line.textContent = price === "inspection" ? "Price confirmed after garment inspection." : "Price to be confirmed by our team."; quote = true;
+        } else {
+          const amount = price * quantity; total += amount; priced = true;
+          line.textContent = "₹" + Number(price).toFixed(price % 1 ? 2 : 0) + " × " + quantity + " = ₹" + Number(amount).toFixed(amount % 1 ? 2 : 0);
+        }
+      });
+      $("#estimatedBill").textContent = priced ? "₹" + Number(total).toFixed(total % 1 ? 2 : 0) : "To be confirmed";
+      const notes = [];
+      if (quote) notes.push("Items needing inspection or a quote are excluded from this estimate.");
+      if (unavailable) notes.push("Unavailable selections cannot be submitted.");
+      if (priced && !quote) notes.push("Listed-rate estimate; final price is confirmed by the shop.");
+      if (!priced && !quote && !unavailable) notes.push("Add garments to calculate available prices.");
+      $("#estimateNote").textContent = notes.join(" ");
+    }
+    function updateRemoveButtons() {
+      const rows = [...garmentRows.querySelectorAll("[data-garment-row]")];
+      rows.forEach(row => { $("[data-remove-garment]", row).disabled = rows.length === 1; });
+    }
+    $("#addGarmentRow").addEventListener("click", () => {
+      const clone = garmentRows.querySelector("[data-garment-row]").cloneNode(true);
+      clone.querySelectorAll("select").forEach(select => { select.selectedIndex = 0; });
+      $("[data-quantity]", clone).value = "1";
+      $("[data-remove-garment]", clone).disabled = false;
+      garmentRows.append(clone); updateRemoveButtons(); refreshGarmentEstimate();
+    });
+    garmentRows.addEventListener("change", refreshGarmentEstimate);
+    garmentRows.addEventListener("input", refreshGarmentEstimate);
+    garmentRows.addEventListener("click", event => {
+      const remove = event.target.closest("[data-remove-garment]");
+      if (!remove || garmentRows.querySelectorAll("[data-garment-row]").length <= 1) return;
+      remove.closest("[data-garment-row]").remove(); updateRemoveButtons(); refreshGarmentEstimate();
+    });
+    updateRemoveButtons(); refreshGarmentEstimate();
+
+    customerOrderForm.addEventListener("submit", async event => {
       event.preventDefault();
-      const form = new FormData(event.currentTarget);
+      const items = [];
+      let totalQuantity = 0;
+      for (const row of garmentRows.querySelectorAll("[data-garment-row]")) {
+        const garment = $("[data-garment]", row).value;
+        const service = $("[data-service]", row).value;
+        const quantity = Number($("[data-quantity]", row).value);
+        if (!garment || !service || !Number.isInteger(quantity) || quantity < 1) {
+          showMessage($("#orderMessage"), "Complete every garment, service and quantity entry.", true); return;
+        }
+        if (garmentPricing[garment]?.[service] === null) {
+          showMessage($("#orderMessage"), service + " is unavailable for " + garment + ".", true); return;
+        }
+        items.push({garment,service,quantity}); totalQuantity += quantity;
+      }
+      const form = new FormData(customerOrderForm);
+      const services = [...new Set(items.map(item => item.service))];
       const row = {
-        user_id: user.id,
-        item_description: String(form.get("item_description") || "").trim(),
-        service: String(form.get("service") || ""),
-        quantity: Number(form.get("quantity")),
-        pickup_date: form.get("pickup_date") || null,
-        address: String(form.get("address") || "").trim(),
-        notes: String(form.get("notes") || "").trim()
+        user_id:user.id,
+        item_description:items.map(item => item.quantity + " × " + item.garment + " — " + item.service).join("; "),
+        service:services.length === 1 ? services[0] : "Multiple services",
+        quantity:totalQuantity,
+        pickup_date:form.get("pickup_date") || null,
+        address:String(form.get("address") || "").trim(),
+        notes:String(form.get("notes") || "").trim()
       };
-      const button = $('button[type="submit"]', event.currentTarget);
-      setBusy(button, true, "Submit request →");
-      const { error } = await supabase.from("orders").insert(row);
-      showMessage($("#orderMessage"), error ? error.message : "Request submitted. The shop will contact you to confirm it.", !!error);
-      if (!error) { event.currentTarget.reset(); await loadOrders(user.id); }
-      setBusy(button, false, "Submit request →");
+      const button = $('button[type="submit"]', customerOrderForm);
+      setBusy(button,true,"Submit My Order →");
+      const {error} = await supabase.from("orders").insert(row);
+      showMessage($("#orderMessage"),error ? error.message : "Your order request has been submitted. You can track it in My Orders.",!!error);
+      if (!error) {
+        customerOrderForm.reset();
+        [...garmentRows.querySelectorAll("[data-garment-row]")].slice(1).forEach(extra => extra.remove());
+        updateRemoveButtons(); refreshGarmentEstimate(); await loadOrders(user.id);
+      }
+      setBusy(button,false,"Submit My Order →");
     });
 
     $("#supportForm").addEventListener("submit", async event => {
