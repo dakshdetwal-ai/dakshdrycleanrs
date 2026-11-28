@@ -24,3 +24,23 @@ a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}
 .auth-message.is-success{color:#167d72!important}
 @keyframes authSpin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.button-spinner{animation:none}.auth-button{transition:none}}
+
+/* Sign-in brand identity and subtle motion */
+body{position:relative;isolation:isolate;overflow-x:hidden}
+body::before{content:"";position:fixed;z-index:-1;inset:-20%;pointer-events:none;background:radial-gradient(ellipse at 18% 38%,rgba(53,212,229,.16),transparent 32%),radial-gradient(ellipse at 78% 70%,rgba(24,145,177,.13),transparent 30%);filter:blur(28px);animation:authAmbient 14s ease-in-out infinite alternate}
+.auth-brand-logo{display:block;width:190px;max-width:42vw;height:auto;object-fit:contain}
+.auth-story .auth-perks{gap:13px;margin-top:30px}
+.auth-perks>div{gap:12px;align-items:flex-start}
+.auth-perks>div>span:first-child{flex:0 0 28px}
+.auth-perks .perk-copy{display:grid;gap:3px;border:0;width:auto;height:auto;border-radius:0;place-items:start}
+.perk-copy strong{color:#e6f5f8;font-size:12px;font-weight:800}
+.perk-copy small{color:#a8bdc9;font-size:11px;line-height:1.5}
+.auth-card{padding:29px 32px;animation:authCardEnter .65s cubic-bezier(.2,.75,.25,1) both}
+.auth-subtitle{margin-bottom:18px}
+.auth-form label{margin-bottom:11px}
+.auth-form input{padding:12px}
+.auth-foot{margin-top:13px}
+@keyframes authAmbient{from{transform:translate3d(-1.5%,0,0) scale(1)}to{transform:translate3d(1.5%,-1%,0) scale(1.06)}}
+@keyframes authCardEnter{from{opacity:0;transform:translateY(15px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){.auth-brand-logo{width:165px}.auth-card{padding:25px}.auth-story .auth-perks{display:grid;gap:10px;margin-top:18px}}
+@media(prefers-reduced-motion:reduce){body::before,.auth-card{animation:none}}
