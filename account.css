@@ -58,3 +58,23 @@ body::before{content:"";position:fixed;z-index:-1;inset:-20%;pointer-events:none
 @media(max-width:760px){.signup-card{padding:24px;width:100%}.auth-brand-logo{width:160px}}
 @media(max-width:390px){.signup-card{padding:21px}}
 @media(prefers-reduced-motion:reduce){.signup-card{animation:none}}
+
+/* Signup form validation and password helpers */
+.signup-password-wrap{position:relative}
+.signup-password-wrap input{padding-right:64px!important}
+.signup-password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#078c9b;font-size:10px;font-weight:800;padding:7px;cursor:pointer}
+.signup-password-toggle:focus-visible{outline:2px solid #13aebd;outline-offset:2px;border-radius:5px}
+.field-hint{display:block;margin-top:5px;color:#82939c;font-size:9px;font-weight:500;line-height:1.45}
+.field-hint.is-valid{color:#16836f}.field-hint.is-invalid{color:#b54747}
+.password-strength{display:grid;gap:5px;margin-top:7px}
+.strength-track{height:4px;border-radius:9px;background:#dfe8eb;overflow:hidden}
+.strength-track>span{display:block;height:100%;width:0;background:#d65b55;transition:width .2s,background .2s}
+.strength-track>span[data-level="2"]{background:#d69a38}
+.strength-track>span[data-level="3"]{background:#20a6a0}
+.strength-track>span[data-level="4"]{background:#16836f}
+.signup-submit{position:relative;display:flex;align-items:center;justify-content:center;gap:9px;min-height:46px}
+.signup-spinner{display:none;width:14px;height:14px;border:2px solid #07313b55;border-top-color:#07313b;border-radius:50%;animation:authSpin .7s linear infinite}
+.signup-submit.is-loading .signup-spinner{display:inline-block}
+.signup-submit.is-loading .signup-button-arrow{display:none}
+.signup-card .auth-message.is-error{color:#b54747!important;background:#fff0ef;border:1px solid #f2d1ce;padding:9px 11px;border-radius:8px}
+@media(prefers-reduced-motion:reduce){.signup-spinner,.strength-track>span{animation:none;transition:none}}
