@@ -102,3 +102,20 @@ body::before{content:"";position:fixed;z-index:-1;inset:-20%;pointer-events:none
 .auth-story .signup-benefits strong{display:block;width:auto;color:#e6f5f8;font-size:13px;line-height:1.35;font-weight:800}
 .auth-story .signup-benefits small{display:block;width:auto;color:#a8bdc9;font-size:11px;line-height:1.5;font-weight:400}
 @media(max-width:760px){.auth-story .signup-benefits{display:grid;gap:11px;margin-top:18px}.auth-story .signup-benefits>div{grid-template-columns:28px minmax(0,1fr)}}
+
+/* Email verification confirmation state */
+.signup-verify{margin-top:12px;padding:24px 20px 18px;border-radius:15px;background:#f1f7f8;text-align:center;color:#173247}
+.signup-verify[hidden]{display:none}
+.signup-verify .verify-icon{width:44px;height:44px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:#dcf7ef;color:#00a982;font-size:22px}
+.signup-verify h2{margin:0 0 7px;font:800 21px Manrope;color:#173247}
+.signup-verify h3{margin:0 0 10px;font-size:13px;color:#009eaa}
+.signup-verify>p:not(.resend-row):not(.resend-message){margin:0 auto 12px;max-width:390px;font-size:11px;line-height:1.55;color:#657f8e}
+.verification-email{display:block;margin:0 auto 13px;color:#173247;font-size:12px;overflow-wrap:anywhere}
+.inbox-note{display:grid;gap:5px;padding:13px 14px;margin-bottom:10px;border-radius:10px;background:#fff;text-align:left;color:#173247;font-size:11px}
+.inbox-note small{color:#82939c;font-size:10px}
+.verify-back-button{display:flex;align-items:center;justify-content:center;width:100%;min-height:42px;text-decoration:none;margin:0 auto 10px}
+.resend-row{margin:0;color:#7b909c;font-size:10px}
+.resend-row button{border:0;background:transparent;color:#008e9c;font:700 10px inherit;cursor:pointer;padding:3px}
+.resend-row button:disabled{color:#8b9ba3;cursor:default}
+.resend-message{min-height:15px;margin:6px 0 0;color:#16836f;font-size:10px;line-height:1.4}
+@media(max-width:760px){.signup-verify{padding:22px 16px}}
