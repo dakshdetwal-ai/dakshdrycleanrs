@@ -431,6 +431,21 @@
     const container = $("#ordersList");
     const { data, error } = await supabase.from("orders").select("id,item_description,service,quantity,pickup_date,status,created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(30);
     if (error) throw error;
+    const totalOrders = data.length;
+    const completedOrders = data.filter(order => String(order.status || "").trim().toLowerCase() === "completed").length;
+    const pendingOrders = data.filter(order => {
+      const status = String(order.status || "").trim().toLowerCase();
+      return ["pending", "processing", "confirmed", "in progress"].includes(status);
+    }).length;
+    const totalNode = $("#statTotalOrders");
+    const pendingNode = $("#statPendingOrders");
+    const completedNode = $("#statCompletedOrders");
+    if (totalNode) totalNode.textContent = String(totalOrders).padStart(2, "0");
+    if (pendingNode) pendingNode.textContent = String(pendingOrders).padStart(2, "0");
+    if (completedNode) completedNode.textContent = String(completedOrders).padStart(2, "0");
+    // The current orders table has no amount/paid column, so spending must not be guessed.
+    const spendingNode = $("#statTotalSpending");
+    if (spendingNode) spendingNode.textContent = "—";
     if (!data.length) { container.innerHTML = '<div class="empty-state">No orders yet. Your pickup requests will appear here.</div>'; return; }
     container.replaceChildren(...data.map(order => {
       const card = document.createElement("article"); card.className = "dash-item";
