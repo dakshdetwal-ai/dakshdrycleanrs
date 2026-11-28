@@ -162,3 +162,20 @@ mark.price-match{background:#b7f5dd;color:#063b2a;border-radius:3px;padding:0 2p
 @media(max-width:850px){.promise-section{gap:38px}.promise-photo-art,.promise-photo{min-height:350px}}
 @media(max-width:680px){.promise-section{grid-template-columns:1fr;gap:28px;padding:68px 18px}.promise-photo-art,.promise-photo{min-height:300px}.promise-copy h2{font-size:clamp(34px,9vw,43px)}.promise-points{gap:10px}}
 @media(prefers-reduced-motion:reduce){.promise-photo{animation:none;transform:none}.promise-points>div{transition:none}}
+
+/* Flexible multi-garment order builder */
+.optional-label{font-size:10px;color:#8ca5b2;font-weight:500}
+.garment-builder{padding:16px;border:1px solid #d8e5e8;border-radius:14px;background:#f7fbfc}
+.garment-builder-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.garment-builder-heading strong{display:block;color:#14364a;font:800 15px "Manrope",sans-serif}
+.garment-builder-heading small{display:block;margin-top:3px;color:#6c8390;font-size:11px}
+.garment-count{padding:5px 9px;border-radius:999px;background:#dff5f3;color:#087f7d;font-size:10px;font-weight:800;white-space:nowrap}
+.garment-entries{display:grid;gap:10px}
+.garment-entry{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1.15fr) 74px 32px;gap:9px;align-items:end;padding:12px;background:#fff;border:1px solid #e1ebee;border-radius:11px}
+.garment-entry label{display:grid;gap:6px;color:#365262;font-size:10px;font-weight:700}
+.garment-entry select,.garment-entry input{width:100%;min-width:0;height:40px;padding:0 9px;border:1px solid #d6e2e6;border-radius:8px;background:#fff;color:#16394b;font:500 12px inherit}
+.remove-garment{width:32px;height:40px;border:1px solid #ead6d6;border-radius:8px;background:#fff5f5;color:#b44b4b;font-size:21px;cursor:pointer}
+.remove-garment:disabled{opacity:.3;cursor:not-allowed}
+.add-garment-button{margin-top:12px;padding:9px 13px;border:1px dashed #69bfc4;border-radius:9px;background:#eaf9f8;color:#087d82;font-size:11px;font-weight:800;cursor:pointer}
+.add-garment-button:hover{background:#d9f4f2}
+@media(max-width:600px){.garment-builder{padding:12px}.garment-entry{grid-template-columns:1fr 1fr;gap:9px}.garment-entry label:nth-child(3){grid-column:1}.remove-garment{grid-column:2;justify-self:end;align-self:end}.garment-builder-heading strong{font-size:14px}}
