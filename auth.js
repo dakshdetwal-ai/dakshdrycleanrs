@@ -341,7 +341,32 @@
     const profileResult = await supabase.from("profiles").select("full_name, phone").eq("id", user.id).single();
     if (profileResult.error) throw profileResult.error;
     const profile = profileResult.data;
-    $("#welcomeName").textContent = profile.full_name || user.email || "customer";
+    const customerName = profile.full_name || user.email || "Customer";
+    $("#welcomeName").textContent = customerName;
+    const profileName = $("#profileName");
+    const profileDropdownName = $("#profileDropdownName");
+    const profileAvatar = $("#profileAvatar");
+    if (profileName) profileName.textContent = customerName;
+    if (profileDropdownName) profileDropdownName.textContent = customerName;
+    if (profileAvatar) profileAvatar.textContent = (customerName.trim().charAt(0) || "C").toUpperCase();
+    const profileMenuButton = $("#profileMenuButton");
+    const profileDropdown = $("#profileDropdown");
+    const profileMenu = $("#profileMenu");
+    const closeProfileMenu = () => {
+      if (profileDropdown) profileDropdown.hidden = true;
+      profileMenuButton?.setAttribute("aria-expanded", "false");
+    };
+    profileMenuButton?.addEventListener("click", () => {
+      const willOpen = profileDropdown?.hidden ?? false;
+      if (profileDropdown) profileDropdown.hidden = !willOpen;
+      profileMenuButton.setAttribute("aria-expanded", String(willOpen));
+    });
+    document.addEventListener("click", event => {
+      if (profileMenu && !profileMenu.contains(event.target)) closeProfileMenu();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeProfileMenu();
+    });
     $("#profileForm [name=full_name]").value = profile.full_name || "";
     $("#profileForm [name=phone]").value = profile.phone || "";
     $("#profileEmail").value = user.email || "";
@@ -361,7 +386,12 @@
       };
       const { error } = await supabase.from("profiles").update(updates).eq("id", user.id);
       showMessage($("#profileMessage"), error ? error.message : "Profile saved.");
-      if (!error) $("#welcomeName").textContent = updates.full_name;
+      if (!error) {
+        $("#welcomeName").textContent = updates.full_name;
+        if ($("#profileName")) $("#profileName").textContent = updates.full_name || "Customer";
+        if ($("#profileDropdownName")) $("#profileDropdownName").textContent = updates.full_name || "Customer";
+        if ($("#profileAvatar")) $("#profileAvatar").textContent = (updates.full_name.trim().charAt(0) || "C").toUpperCase();
+      }
     });
 
     $("#customerOrderForm").addEventListener("submit", async event => {
