@@ -113,10 +113,16 @@
         });
         if (error) throw error;
         if (data.session) {
-          window.location.href = "dashboard.html";
+          signupForm.hidden = true;
+          document.querySelector(".signup-card .auth-subtitle")?.setAttribute("hidden", "");
+          document.querySelector(".signup-card .auth-switch")?.setAttribute("hidden", "");
+          document.querySelector(".signup-card .auth-foot")?.setAttribute("hidden", "");
+          const welcomePanel = $("#signupWelcome");
+          if (welcomePanel) welcomePanel.hidden = false;
           return;
         }
-        showMessage(message, "Your signup request has been received. Check your email for a verification link, then sign in.");
+        showMessage(message, "Your signup request has been received. Please check your email and verify your address. After verification, sign in to access your account.");
+        message?.classList.add("is-pending");
         signupForm.reset();
         updatePasswordStrength();
         updatePasswordMatch();
