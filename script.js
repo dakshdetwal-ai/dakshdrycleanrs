@@ -85,6 +85,33 @@ priceSearch?.addEventListener("input", filterPrices);
 // This keeps ordering simple for customers: no account is required.
 const orderForm = document.getElementById("orderForm");
 const formMessage = document.getElementById("formMessage");
+const garmentEntries = document.getElementById("garmentEntries");
+const garmentTemplate = document.getElementById("garmentEntryTemplate");
+const addGarmentButton = document.getElementById("addGarment");
+const garmentCount = document.getElementById("garmentCount");
+
+function refreshGarmentRows() {
+  if (!garmentEntries) return;
+  const rows = [...garmentEntries.querySelectorAll(".garment-entry")];
+  if (garmentCount) garmentCount.textContent = rows.length + (rows.length === 1 ? " item" : " items");
+  rows.forEach(row => {
+    const remove = row.querySelector(".remove-garment");
+    if (remove) remove.disabled = rows.length === 1;
+  });
+}
+addGarmentButton?.addEventListener("click", () => {
+  if (!garmentTemplate || !garmentEntries) return;
+  garmentEntries.appendChild(garmentTemplate.content.cloneNode(true));
+  refreshGarmentRows();
+});
+garmentEntries?.addEventListener("click", event => {
+  const remove = event.target.closest(".remove-garment");
+  if (remove && garmentEntries.querySelectorAll(".garment-entry").length > 1) {
+    remove.closest(".garment-entry").remove();
+    refreshGarmentRows();
+  }
+});
+refreshGarmentRows();
 
 if (orderForm && formMessage) {
   orderForm.addEventListener("submit", async event => {
@@ -94,24 +121,27 @@ if (orderForm && formMessage) {
       formMessage.textContent = message;
       formMessage.style.color = isError ? "#b54747" : "#167d72";
     };
-
     const data = Object.fromEntries(new FormData(orderForm).entries());
-    const quantity = Number(data.quantity);
     const mobileDigits = String(data.mobile || "").replace(/\D/g, "");
-
-    if (!Number.isInteger(quantity) || quantity < 1) {
-      showMessage("Please enter a valid quantity.", true);
-      return;
-    }
+    const garments = [...orderForm.querySelectorAll(".garment-entry")].map(row => ({
+      garment: row.querySelector('[name="garmentType"]').value,
+      service: row.querySelector('[name="garmentService"]').value,
+      quantity: Number(row.querySelector('[name="garmentQuantity"]').value)
+    }));
     if (mobileDigits.length < 10 || mobileDigits.length > 13) {
-      showMessage("Please enter a valid mobile number.", true);
-      return;
+      showMessage("Please enter a valid mobile number.", true); return;
     }
-
+    if (!garments.length || garments.some(item => !item.garment || !item.service || !Number.isInteger(item.quantity) || item.quantity < 1)) {
+      showMessage("Please complete the garment, service and quantity for every item.", true); return;
+    }
+    const totalQuantity = garments.reduce((sum, item) => sum + item.quantity, 0);
+    const itemSummary = garments.map(item => item.quantity + " " + item.garment + " — " + (item.service === "Iron" ? "Ironing" : item.service === "Wash" ? "Wash + Iron" : "Dry Cleaning")).join("; ");
+    const extraNotes = String(data.notes || "").trim();
+    const garmentNotes = "Garment details: " + itemSummary;
+    const notes = [garmentNotes, extraNotes].filter(Boolean).join("\n");
     button.disabled = true;
     button.textContent = "Sending request…";
     showMessage("Sending your order request…");
-
     try {
       const response = await fetch(WORKER_ORDER_URL, {
         method: "POST",
@@ -120,22 +150,24 @@ if (orderForm && formMessage) {
           name: String(data.name || "").trim(),
           email: String(data.email || "").trim().toLowerCase(),
           mobile: String(data.mobile || "").trim(),
-          itemType: data.itemType,
-          quantity,
-          packaging: data.packaging,
+          itemType: garments.length === 1 ? garments[0].service : "Multiple garment services",
+          quantity: totalQuantity,
+          garments,
+          packaging: data.packaging || "No preference",
           address: String(data.address || "").trim(),
-          notes: String(data.notes || "").trim()
+          notes
         })
       });
-
       let result = {};
       try { result = await response.json(); } catch (_) {}
-      if (!response.ok || result.success === false) {
-        throw new Error(result.error || "We couldn't send your request. Please try again.");
-      }
-
+      if (!response.ok || result.success === false) throw new Error(result.error || "We couldn't send your request. Please try again.");
       showMessage("Order request received! We'll contact you on WhatsApp to confirm the details.");
       orderForm.reset();
+      if (garmentEntries && garmentTemplate) {
+        garmentEntries.innerHTML = "";
+        garmentEntries.appendChild(garmentTemplate.content.cloneNode(true));
+        refreshGarmentRows();
+      }
     } catch (error) {
       console.error("Pickup request failed:", error);
       showMessage(error.message || "Something went wrong. Please try again or call the shop.", true);
@@ -145,7 +177,6 @@ if (orderForm && formMessage) {
     }
   });
 }
-
 
 // Scroll-triggered entrance motion; content remains visible if motion is unsupported.
 const revealTargets = document.querySelectorAll(
