@@ -14,19 +14,65 @@ mainNav?.querySelectorAll("a").forEach(link => link.addEventListener("click", ()
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 
-// Price list filters: category tabs and item search work together.
+// Price list search and category filters work together, with live row matching.
 const priceSearch = document.getElementById("priceSearch");
 const priceGroups = [...document.querySelectorAll(".price-group")];
 const categoryTabs = [...document.querySelectorAll(".category-tab")];
+const priceNoResults = document.getElementById("priceNoResults");
 let activeCategory = "all";
 
+function clearPriceHighlights(root) {
+  root.querySelectorAll("mark.price-match").forEach(mark => mark.replaceWith(document.createTextNode(mark.textContent)));
+}
+function highlightPriceMatches(root, query) {
+  if (!query) return;
+  const terms = query.split(/\s+/).filter(Boolean).map(term => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  if (!terms.length) return;
+  const regex = new RegExp("(" + terms.join("|") + ")", "gi");
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.parentElement?.closest("mark,script,style")) continue;
+    if (regex.test(node.nodeValue)) { regex.lastIndex = 0; nodes.push(node); }
+    else regex.lastIndex = 0;
+  }
+  nodes.forEach(node => {
+    const fragment = document.createDocumentFragment();
+    node.nodeValue.split(regex).forEach((part, index) => {
+      if (!part) return;
+      if (index % 2) {
+        const mark = document.createElement("mark");
+        mark.className = "price-match";
+        mark.textContent = part;
+        fragment.appendChild(mark);
+      } else fragment.appendChild(document.createTextNode(part));
+    });
+    node.replaceWith(fragment);
+  });
+}
 function filterPrices() {
   const query = (priceSearch?.value || "").trim().toLowerCase();
+  let visibleCount = 0;
   priceGroups.forEach(group => {
+    clearPriceHighlights(group);
     const categoryMatches = activeCategory === "all" || group.dataset.group === activeCategory;
-    const searchMatches = !query || group.textContent.toLowerCase().includes(query);
-    group.hidden = !(categoryMatches && searchMatches);
+    const rows = [...group.querySelectorAll("tbody tr")];
+    let matchingRows = 0;
+    const titleMatches = group.querySelector(".group-title")?.textContent.toLowerCase().includes(query);
+    rows.forEach(row => {
+      const matches = !query || titleMatches || row.textContent.toLowerCase().includes(query);
+      row.hidden = !matches;
+      if (matches) matchingRows++;
+    });
+    const visible = categoryMatches && (!query || titleMatches || matchingRows > 0);
+    group.hidden = !visible;
+    if (visible) {
+      visibleCount++;
+      if (query) highlightPriceMatches(group, query);
+    }
   });
+  if (priceNoResults) priceNoResults.hidden = visibleCount > 0;
 }
 categoryTabs.forEach(button => button.addEventListener("click", () => {
   activeCategory = button.dataset.category;
