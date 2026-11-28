@@ -131,3 +131,18 @@ td small{font-size:10px;margin-top:4px}
 @media(max-width:680px){.pricing-section{padding:68px 18px}.pricing-heading h2{font-size:clamp(36px,9vw,48px)}.price-groups{grid-template-columns:1fr}.price-group{padding:14px}.price-controls{align-items:stretch;flex-direction:column}.search-wrap{width:100%}}
 
 mark.price-match{background:#b7f5dd;color:#063b2a;border-radius:3px;padding:0 2px;font-weight:800}
+
+.price-order-link{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding:10px 12px;border:1px solid #2a6577;border-radius:9px;color:#75e3e9;text-decoration:none;font-size:11px;font-weight:800;transition:background .2s,border-color .2s,transform .2s}
+.price-order-link:hover{background:#10394a;border-color:var(--cyan);transform:translateY(-1px)}
+.price-order-link span{font-size:16px}
+.pricing-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;padding:14px 16px;border:1px solid #24465a;border-radius:12px;background:#091d2b}
+.pricing-legend strong{width:100%;font:700 12px "Manrope",sans-serif;color:#f2f8fb}
+.pricing-legend span{font-size:10px;line-height:1.55;color:#a8bdc9}
+.pricing-legend b{color:#e5f7fa}
+.pricing-cta{margin-top:26px;padding:22px 20px;border-radius:17px;background:#0b2637;border:1px solid #1c465a}
+.pricing-cta h3{margin:0;color:#f4f9fc;font:800 21px "Manrope",sans-serif}
+.pricing-cta h4{margin:14px 0 8px;color:var(--cyan);font:800 17px "Manrope",sans-serif}
+.pricing-cta p{margin:0 0 14px;color:#bdced7;font-size:13px}
+.pricing-cta-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px 20px;border-radius:999px;background:var(--cyan);color:#06222b;text-decoration:none;font-weight:800;font-size:15px;transition:transform .2s,box-shadow .2s}
+.pricing-cta-button:hover{transform:translateY(-2px);box-shadow:0 9px 24px #2bc5d444}
+@media(max-width:680px){.pricing-legend{display:grid;gap:7px}.pricing-cta{padding:18px 15px}}
