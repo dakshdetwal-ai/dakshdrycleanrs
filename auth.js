@@ -58,22 +58,76 @@
   const loginForm = $("#loginForm");
   if (loginForm) {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("verified") === "1") showMessage($("#authMessage"), "Email confirmed. You can now sign in.");
+    const emailInput = $('input[name="email"]', loginForm);
+    const passwordInput = $('input[name="password"]', loginForm);
+    const rememberEmail = $("#rememberEmail");
+    const authMessage = $("#authMessage");
+    const loginButton = $('button[type="submit"]', loginForm);
+    const savedEmail = localStorage.getItem("dakshRememberedEmail") || "";
+    if (savedEmail && emailInput) {
+      emailInput.value = savedEmail;
+      if (rememberEmail) rememberEmail.checked = true;
+    }
+    if (params.get("verified") === "1") showMessage(authMessage, "Email confirmed. You can now sign in.");
+    loginForm.querySelectorAll("input").forEach(input => input.addEventListener("input", () => {
+      input.removeAttribute("aria-invalid");
+      if (authMessage) { authMessage.textContent = ""; authMessage.classList.remove("is-error"); }
+    }));
+    document.querySelectorAll("[data-password-toggle]").forEach(toggle => toggle.addEventListener("click", () => {
+      const field = document.getElementById(toggle.dataset.passwordToggle);
+      if (!field) return;
+      const reveal = field.type === "password";
+      field.type = reveal ? "text" : "password";
+      toggle.textContent = reveal ? "Hide" : "Show";
+      toggle.setAttribute("aria-label", reveal ? "Hide password" : "Show password");
+      toggle.setAttribute("aria-pressed", String(reveal));
+    }));
     loginForm.addEventListener("submit", async event => {
       event.preventDefault();
-      const form = new FormData(loginForm);
-      const email = String(form.get("email") || "").trim().toLowerCase();
-      const password = String(form.get("password") || "");
-      const button = $('button[type="submit"]', loginForm);
-      setBusy(button, true, "Sign in →");
-      showMessage($("#authMessage"), "Signing you in…");
+      const email = String(emailInput?.value || "").trim().toLowerCase();
+      const password = String(passwordInput?.value || "");
+      if (!email || !emailInput.checkValidity()) {
+        emailInput?.setAttribute("aria-invalid", "true");
+        showMessage(authMessage, "Enter a valid email address.", true);
+        authMessage?.classList.add("is-error");
+        emailInput?.focus();
+        return;
+      }
+      if (!password || password.length < 8) {
+        passwordInput?.setAttribute("aria-invalid", "true");
+        showMessage(authMessage, "Enter your password (at least 8 characters).", true);
+        authMessage?.classList.add("is-error");
+        passwordInput?.focus();
+        return;
+      }
+      if (rememberEmail?.checked) localStorage.setItem("dakshRememberedEmail", email);
+      else localStorage.removeItem("dakshRememberedEmail");
+      loginButton?.classList.add("is-loading");
+      if (loginButton) {
+        loginButton.disabled = true;
+        loginButton.querySelector(".button-label").textContent = "Signing in…";
+      }
+      showMessage(authMessage, "Checking your account…");
       try {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         window.location.href = "dashboard.html";
       } catch (error) {
-        showMessage($("#authMessage"), error.message || "Sign in failed. Check your details and try again.", true);
-      } finally { setBusy(button, false, "Sign in →"); }
+        const raw = String(error?.message || "").toLowerCase();
+        const message = raw.includes("invalid login credentials") || raw.includes("invalid credentials")
+          ? "Email or password is incorrect. Please check your details and try again."
+          : raw.includes("email not confirmed")
+            ? "Please confirm your email address before signing in."
+            : "We couldn't sign you in right now. Please try again.";
+        showMessage(authMessage, message, true);
+        authMessage?.classList.add("is-error");
+      } finally {
+        loginButton?.classList.remove("is-loading");
+        if (loginButton) {
+          loginButton.disabled = false;
+          loginButton.querySelector(".button-label").textContent = "Sign in";
+        }
+      }
     });
   }
 
