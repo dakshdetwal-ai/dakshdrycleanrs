@@ -186,3 +186,16 @@ document.querySelectorAll(".service-arrow[data-service]").forEach(link => {
     if (serviceSelect) serviceSelect.value = link.dataset.service;
   });
 });
+
+
+// Pricing-card CTAs carry the selected garment category into the order form.
+document.querySelectorAll(".price-order-link[data-price-group]").forEach(link => {
+  link.addEventListener("click", () => {
+    const card = link.closest(".price-group");
+    const groupName = card?.querySelector(".group-title h3")?.textContent.trim() || "Selected garment";
+    const serviceSelect = document.querySelector('#orderForm select[name="itemType"]');
+    const notesField = document.querySelector('#orderForm textarea[name="notes"]');
+    if (serviceSelect) serviceSelect.value = "Other";
+    if (notesField) notesField.value = "Garment category: " + groupName + ". Please help me choose the right service.";
+  });
+});
