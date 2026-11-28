@@ -125,7 +125,8 @@ function updateOrderSummary() {
     service: row.querySelector('[name="garmentService"]')?.value || "",
     quantity: Number(row.querySelector('[name="garmentQuantity"]')?.value || 0)
   })).filter(item => item.garment && item.service && Number.isInteger(item.quantity) && item.quantity > 0);
-  const packaging = orderForm?.querySelector('[name="packaging"]')?.value === "Yes" ? 4 : 0;
+  const clothCount = items.reduce((total, item) => total + item.quantity, 0);
+  const packaging = orderForm?.querySelector('[name="packaging"]')?.value === "Yes" ? clothCount : 0;
   summaryLines.innerHTML = "";
   let subtotal = 0;
   if (!items.length) {
@@ -150,7 +151,7 @@ function updateOrderSummary() {
       const line = document.createElement("div");
       line.className = "summary-line";
       const label = document.createElement("span");
-      label.textContent = "Packaging";
+      label.textContent = "Packaging × " + clothCount + " cloth" + (clothCount === 1 ? "" : "es");
       const amount = document.createElement("strong");
       amount.textContent = formatINR(packaging);
       line.append(label, amount);
@@ -162,7 +163,12 @@ function updateOrderSummary() {
 refreshGarmentRows();
 garmentEntries?.addEventListener("change", updateOrderSummary);
 garmentEntries?.addEventListener("input", updateOrderSummary);
-orderForm?.querySelector('[name="packaging"]')?.addEventListener("change", updateOrderSummary);
+const packagingSelect = orderForm?.querySelector('[name="packaging"]');
+const packagingWarning = document.getElementById("packagingWarning");
+packagingSelect?.addEventListener("change", () => {
+  if (packagingWarning) packagingWarning.hidden = packagingSelect.value !== "No";
+  updateOrderSummary();
+});
 updateOrderSummary();
 
 if (orderForm && formMessage) {
@@ -205,7 +211,9 @@ if (orderForm && formMessage) {
           itemType: garments.length === 1 ? garments[0].service : "Multiple garment services",
           quantity: totalQuantity,
           garments,
-          packaging: data.packaging || "No preference",
+          packaging: data.packaging,
+          packagingRate: data.packaging === "Yes" ? 1 : 0,
+          packagingCharge: data.packaging === "Yes" ? totalQuantity : 0,
           address: String(data.address || "").trim(),
           notes
         })
