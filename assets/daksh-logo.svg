@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" role="img" aria-labelledby="title desc">
+<title id="title">Daksh Dry Cleaners</title><desc id="desc">A blue hanger and flowing fabric mark above the Daksh Dry Cleaners wordmark.</desc>
+<defs>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7ffff"/><stop offset=".38" stop-color="#55e5ff"/><stop offset="1" stop-color="#0879df"/></linearGradient>
+ <linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#a9c9e7"/></linearGradient>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g transform="translate(36 12)">
+ <circle cx="145" cy="145" r="125" fill="none" stroke="#087de4" stroke-width="3" opacity=".8"/>
+ <path d="M133 52c-1-24 30-32 43-13 12 18-5 31-20 41-8 5-11 12-11 24" fill="none" stroke="url(#blue)" stroke-width="8" stroke-linecap="round" filter="url(#glow)"/>
+ <path d="M145 103c-34 0-47 25-67 37l-39 21c-19 10-23 37-5 49 8 5 18 3 27-2l84-48 84 48c9 5 19 7 27 2 18-12 14-39-5-49l-39-21c-20-12-33-37-67-37Z" fill="none" stroke="url(#blue)" stroke-width="7" stroke-linejoin="round"/>
+ <path d="M82 150l63 27 63-27-15 63h-96Z" fill="#d7eafa" opacity=".9"/>
+ <path d="M44 216c55 14 107-41 158-27 29 8 47 5 72-9-29 36-65 50-104 39-47-13-77 15-126-3Z" fill="url(#blue)" filter="url(#glow)"/>
+ <path d="M245 68l4 12 12 4-12 4-4 12-4-12-12-4 12-4Z" fill="white"/>
+</g>
+<g transform="translate(330 98)">
+ <text x="0" y="105" fill="url(#silver)" font-family="Manrope,Arial,sans-serif" font-size="104" font-weight="800" letter-spacing="-7">Daksh</text>
+ <path d="M2 125H520" stroke="url(#blue)" stroke-width="3"/>
+ <text x="5" y="166" fill="#f4fbff" font-family="Arial,sans-serif" font-size="31" font-weight="600" letter-spacing="12">DRY CLEANERS</text>
+ <text x="6" y="211" fill="#8bdff5" font-family="Arial,sans-serif" font-size="17" letter-spacing="2">IRON  •  WASH + IRON  •  DRY CLEAN</text>
+</g></svg>
