@@ -103,6 +103,57 @@ addGarmentButton?.addEventListener("click", () => {
   if (!garmentTemplate || !garmentEntries) return;
   garmentEntries.appendChild(garmentTemplate.content.cloneNode(true));
   refreshGarmentRows();
+
+const summaryLines = document.getElementById("orderSummaryLines");
+const summaryTotal = document.getElementById("orderSummaryTotal");
+const SERVICE_ESTIMATE_RATES = { Iron: 7.5, Wash: 20, "Dry Clean": 50 };
+const formatINR = amount => "₹" + (Number.isInteger(amount) ? amount : amount.toFixed(2).replace(/0$/, ""));
+function updateOrderSummary() {
+  if (!summaryLines || !summaryTotal || !garmentEntries) return;
+  const items = [...garmentEntries.querySelectorAll(".garment-entry")].map(row => ({
+    garment: row.querySelector('[name="garmentType"]')?.value || "",
+    service: row.querySelector('[name="garmentService"]')?.value || "",
+    quantity: Number(row.querySelector('[name="garmentQuantity"]')?.value || 0)
+  })).filter(item => item.garment && item.service && Number.isInteger(item.quantity) && item.quantity > 0);
+  const packaging = orderForm?.querySelector('[name="packaging"]')?.value === "Yes" ? 4 : 0;
+  summaryLines.innerHTML = "";
+  let subtotal = 0;
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "summary-empty";
+    empty.textContent = "Choose a garment and service to see your estimate.";
+    summaryLines.appendChild(empty);
+  } else {
+    items.forEach(item => {
+      const rate = SERVICE_ESTIMATE_RATES[item.service];
+      const lineTotal = rate * item.quantity;
+      subtotal += lineTotal;
+      const line = document.createElement("div");
+      line.className = "summary-line";
+      const label = document.createElement("span");
+      label.textContent = (item.service === "Iron" ? "Ironing" : item.service === "Wash" ? "Wash + Iron" : "Dry Cleaning") + " · " + item.garment + " × " + item.quantity;
+      const amount = document.createElement("strong");
+      amount.textContent = formatINR(lineTotal);
+      line.append(label, amount);
+      summaryLines.appendChild(line);
+    });
+    if (packaging) {
+      const line = document.createElement("div");
+      line.className = "summary-line";
+      const label = document.createElement("span");
+      label.textContent = "Packaging";
+      const amount = document.createElement("strong");
+      amount.textContent = formatINR(packaging);
+      line.append(label, amount);
+      summaryLines.appendChild(line);
+    }
+  }
+  summaryTotal.textContent = formatINR(subtotal + packaging);
+}
+garmentEntries?.addEventListener("change", updateOrderSummary);
+garmentEntries?.addEventListener("input", updateOrderSummary);
+orderForm?.querySelector('[name="packaging"]')?.addEventListener("change", updateOrderSummary);
+updateOrderSummary();
 });
 garmentEntries?.addEventListener("click", event => {
   const remove = event.target.closest(".remove-garment");
@@ -173,7 +224,7 @@ if (orderForm && formMessage) {
       showMessage(error.message || "Something went wrong. Please try again or call the shop.", true);
     } finally {
       button.disabled = false;
-      button.innerHTML = 'Place order <span>→</span>';
+      button.innerHTML = 'Submit My Order <span>→</span>';
     }
   });
 }
