@@ -121,8 +121,17 @@
           if (welcomePanel) welcomePanel.hidden = false;
           return;
         }
-        showMessage(message, "Your signup request has been received. Please check your email and verify your address. After verification, sign in to access your account.");
-        message?.classList.add("is-pending");
+        if (data.user?.identities?.length === 0) {
+          throw new Error("An account with this email may already exist. Try signing in or resetting your password.");
+        }
+        signupForm.hidden = true;
+        document.querySelector(".signup-card .auth-subtitle")?.setAttribute("hidden", "");
+        document.querySelector(".signup-card .auth-switch")?.setAttribute("hidden", "");
+        document.querySelector(".signup-card .auth-foot")?.setAttribute("hidden", "");
+        const verifyPanel = $("#signupVerify");
+        const emailLabel = $("#verificationEmail");
+        if (emailLabel) emailLabel.textContent = email;
+        if (verifyPanel) verifyPanel.hidden = false;
         signupForm.reset();
         updatePasswordStrength();
         updatePasswordMatch();
@@ -142,6 +151,50 @@
           signupButton.disabled = false;
           signupButton.querySelector(".signup-button-label").textContent = "Create account";
         }
+      }
+    });
+  }
+
+  const resendVerificationButton = $("#resendVerification");
+  if (resendVerificationButton) {
+    const resendMessage = $("#resendMessage");
+    const verificationEmail = $("#verificationEmail");
+    let resendTimer = null;
+    let resendSeconds = 0;
+    function startResendCooldown(seconds = 30) {
+      resendSeconds = seconds;
+      resendVerificationButton.disabled = true;
+      resendVerificationButton.textContent = `Resend available in ${resendSeconds}s`;
+      if (resendTimer) clearInterval(resendTimer);
+      resendTimer = setInterval(() => {
+        resendSeconds -= 1;
+        if (resendSeconds <= 0) {
+          clearInterval(resendTimer);
+          resendTimer = null;
+          resendVerificationButton.disabled = false;
+          resendVerificationButton.textContent = "Resend verification";
+        } else {
+          resendVerificationButton.textContent = `Resend available in ${resendSeconds}s`;
+        }
+      }, 1000);
+    }
+    resendVerificationButton.addEventListener("click", async () => {
+      const email = verificationEmail?.textContent?.trim();
+      if (!email || resendVerificationButton.disabled) return;
+      resendVerificationButton.disabled = true;
+      resendVerificationButton.textContent = "Sending…";
+      if (resendMessage) resendMessage.textContent = "";
+      try {
+        const { error } = await supabase.auth.resend({ type: "signup", email });
+        if (error) throw error;
+        if (resendMessage) resendMessage.textContent = "A new verification email has been sent. Please check your inbox.";
+        startResendCooldown(30);
+      } catch (error) {
+        const raw = String(error?.message || "").toLowerCase();
+        if (resendMessage) resendMessage.textContent = raw.includes("rate") || raw.includes("limit")
+          ? "Please wait a little before requesting another email."
+          : "We couldn't resend the email right now. Please try again shortly.";
+        startResendCooldown(30);
       }
     });
   }
