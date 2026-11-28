@@ -113,15 +113,34 @@
       <div class="order-copy"><p class="eyebrow"><span></span> LET'S GET THINGS FRESH</p><h2>Fresh Clothes.<br><em>Zero Hassle.</em><br>One Simple Request.</h2><p>Tell us what needs cleaning. We'll help you choose the right service and confirm your order personally.</p><div class="order-contact"><span>✦</span><p><strong>Personal confirmation</strong><small>Your request is not confirmed until our team contacts you.</small></p></div></div>
       <form id="orderForm" class="order-form">
         <div class="form-heading"><span>YOUR REQUEST</span><small>Fields marked * are required</small></div>
-        <div class="form-row"><label>Full name *<input name="name" autocomplete="name" required placeholder="Your name"></label><label>Email address *<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label></div>
-        <div class="form-row"><label>Mobile number *<input name="mobile" autocomplete="tel" inputmode="tel" required placeholder="+91 XXXXX XXXXX"></label><label>Service *<select name="itemType" required><option value="">Choose a service</option><option value="Iron">Ironing</option><option value="Wash">Wash</option><option value="Dry Clean">Dry cleaning</option><option value="Other">Other / Need advice</option></select></label></div>
-        <div class="form-row"><label>Quantity *<input name="quantity" type="number" min="1" step="1" required placeholder="Number of pieces"></label><label>Packaging *<select name="packaging" required><option value="">Choose an option</option><option value="No">No packaging</option><option value="Yes">Add packaging (+₹4 per order)</option></select></label></div>
+        <div class="form-row"><label>Full name *<input name="name" autocomplete="name" required placeholder="Your name"></label><label>Email address <span class="optional-label">(optional)</span><input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label></div>
+        <div class="form-row"><label>Mobile number *<input name="mobile" autocomplete="tel" inputmode="tel" required placeholder="+91 XXXXX XXXXX"></label><label>Packaging <span class="optional-label">(optional)</span><select name="packaging"><option value="">No preference</option><option value="No">No packaging</option><option value="Yes">Add packaging (+₹4 per order)</option></select></label></div>
+        <div class="garment-builder">
+          <div class="garment-builder-heading"><div><strong>Your garments</strong><small>Add each garment type and the service it needs.</small></div><span class="garment-count" id="garmentCount">1 item</span></div>
+          <div id="garmentEntries" class="garment-entries">
+            <div class="garment-entry">
+              <label>Garment<select name="garmentType" required><option value="">Choose garment</option><option>Shirt</option><option>T-shirt</option><option>Trousers</option><option>Jeans</option><option>Kurta</option><option>Jacket</option><option>Suit / Blazer</option><option>Dress</option><option>Saree</option><option>Bedsheet</option><option>Blanket</option><option>Other</option></select></label>
+              <label>Service<select name="garmentService" required><option value="">Choose service</option><option value="Iron">Ironing</option><option value="Wash">Wash + Iron</option><option value="Dry Clean">Dry Cleaning</option></select></label>
+              <label>Qty<input name="garmentQuantity" type="number" min="1" step="1" value="1" required></label>
+              <button class="remove-garment" type="button" aria-label="Remove garment" disabled>×</button>
+            </div>
+          </div>
+          <button type="button" class="add-garment-button" id="addGarment">+ Add another garment</button>
+        </div>
         <label>Pickup address *<textarea name="address" rows="3" required placeholder="Enter your complete address"></textarea></label>
         <label>Anything we should know? <textarea name="notes" rows="2" placeholder="Garment details or special instructions (optional)"></textarea></label>
         <button class="button button-primary submit-button" type="submit">Send request <span>→</span></button>
         <p class="form-disclaimer">We'll contact you to confirm your request. Prices for inspected items are confirmed separately.</p>
         <p id="formMessage" class="form-message" role="status" aria-live="polite"></p>
       </form>
+      <template id="garmentEntryTemplate">
+  <div class="garment-entry">
+    <label>Garment<select name="garmentType" required><option value="">Choose garment</option><option>Shirt</option><option>T-shirt</option><option>Trousers</option><option>Jeans</option><option>Kurta</option><option>Jacket</option><option>Suit / Blazer</option><option>Dress</option><option>Saree</option><option>Bedsheet</option><option>Blanket</option><option>Other</option></select></label>
+    <label>Service<select name="garmentService" required><option value="">Choose service</option><option value="Iron">Ironing</option><option value="Wash">Wash + Iron</option><option value="Dry Clean">Dry Cleaning</option></select></label>
+    <label>Qty<input name="garmentQuantity" type="number" min="1" step="1" value="1" required></label>
+    <button class="remove-garment" type="button" aria-label="Remove garment">×</button>
+  </div>
+</template>
     </section>
   </main>
 
