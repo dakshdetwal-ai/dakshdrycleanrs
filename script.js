@@ -99,3 +99,28 @@ if (orderForm && formMessage) {
     }
   });
 }
+
+
+// Scroll-triggered entrance motion; content remains visible if motion is unsupported.
+const revealTargets = document.querySelectorAll(
+  ".service-strip .section-intro, .service-tile, .pricing-heading, .price-group, .promise-art, .promise-copy, .order-copy, .order-form"
+);
+revealTargets.forEach((element, index) => {
+  element.classList.add("reveal");
+  if (element.classList.contains("service-tile") || element.classList.contains("price-group")) {
+    element.classList.add("reveal-delay-" + ((index % 3) + 1));
+  }
+});
+if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+  revealTargets.forEach(element => revealObserver.observe(element));
+} else {
+  revealTargets.forEach(element => element.classList.add("is-visible"));
+}
