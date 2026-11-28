@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 560" role="img" aria-labelledby="t d">
 <title id="t">Premium garment care at Daksh Dry Cleaners</title><desc id="d">Fresh shirts on wooden hangers beside a steaming iron and neatly folded towels.</desc>
-<defs>
+<style><![CDATA[.shirt-sway{transform-box:fill-box;transform-origin:50% 0;animation:shirtSway 6s ease-in-out infinite}.shirt-mid{animation-delay:-1.2s}.shirt-front{animation-delay:-2.4s}.shirt-side{animation-delay:-3.2s}.iron-steam path{stroke-dasharray:16 12;animation:steamRise 3s linear infinite}.steam-two{animation-delay:-1s!important}.steam-three{animation-delay:-2s!important}@keyframes shirtSway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1.5deg)}}@keyframes steamRise{0%{opacity:0;stroke-dashoffset:40;transform:translateY(12px)}35%{opacity:.75}100%{opacity:0;stroke-dashoffset:-45;transform:translateY(-20px)}}]]></style><defs>
  <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#123b56"/><stop offset=".55" stop-color="#071827"/><stop offset="1" stop-color="#06111e"/></linearGradient>
  <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe0a0"/><stop offset=".45" stop-color="#a96a2a"/><stop offset="1" stop-color="#f2c477"/></linearGradient>
  <linearGradient id="shirt" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#e9f3f8"/><stop offset="1" stop-color="#a9c5d8"/></linearGradient>
