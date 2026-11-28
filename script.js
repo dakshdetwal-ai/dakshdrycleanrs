@@ -103,6 +103,16 @@ addGarmentButton?.addEventListener("click", () => {
   if (!garmentTemplate || !garmentEntries) return;
   garmentEntries.appendChild(garmentTemplate.content.cloneNode(true));
   refreshGarmentRows();
+  updateOrderSummary();
+});
+garmentEntries?.addEventListener("click", event => {
+  const remove = event.target.closest(".remove-garment");
+  if (remove && garmentEntries.querySelectorAll(".garment-entry").length > 1) {
+    remove.closest(".garment-entry").remove();
+    refreshGarmentRows();
+    updateOrderSummary();
+  }
+});
 
 const summaryLines = document.getElementById("orderSummaryLines");
 const summaryTotal = document.getElementById("orderSummaryTotal");
@@ -125,8 +135,7 @@ function updateOrderSummary() {
     summaryLines.appendChild(empty);
   } else {
     items.forEach(item => {
-      const rate = SERVICE_ESTIMATE_RATES[item.service];
-      const lineTotal = rate * item.quantity;
+      const lineTotal = SERVICE_ESTIMATE_RATES[item.service] * item.quantity;
       subtotal += lineTotal;
       const line = document.createElement("div");
       line.className = "summary-line";
@@ -150,19 +159,11 @@ function updateOrderSummary() {
   }
   summaryTotal.textContent = formatINR(subtotal + packaging);
 }
+refreshGarmentRows();
 garmentEntries?.addEventListener("change", updateOrderSummary);
 garmentEntries?.addEventListener("input", updateOrderSummary);
 orderForm?.querySelector('[name="packaging"]')?.addEventListener("change", updateOrderSummary);
 updateOrderSummary();
-});
-garmentEntries?.addEventListener("click", event => {
-  const remove = event.target.closest(".remove-garment");
-  if (remove && garmentEntries.querySelectorAll(".garment-entry").length > 1) {
-    remove.closest(".garment-entry").remove();
-    refreshGarmentRows();
-  }
-});
-refreshGarmentRows();
 
 if (orderForm && formMessage) {
   orderForm.addEventListener("submit", async event => {
