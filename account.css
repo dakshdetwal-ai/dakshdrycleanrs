@@ -78,3 +78,18 @@ body::before{content:"";position:fixed;z-index:-1;inset:-20%;pointer-events:none
 .signup-submit.is-loading .signup-button-arrow{display:none}
 .signup-card .auth-message.is-error{color:#b54747!important;background:#fff0ef;border:1px solid #f2d1ce;padding:9px 11px;border-radius:8px}
 @media(prefers-reduced-motion:reduce){.signup-spinner,.strength-track>span{animation:none;transition:none}}
+
+.signup-benefits{display:grid;gap:13px;margin-top:26px}
+.signup-benefits>div{display:flex;align-items:flex-start;gap:11px}
+.signup-benefits>div>span:first-child{flex:0 0 25px}
+.signup-benefits>div>span:last-child{display:grid;gap:3px}
+.signup-benefits strong{color:#e8f6f8;font-size:12px;font-weight:800}
+.signup-benefits small{color:#a8bdc9;font-size:11px;line-height:1.5}
+.signup-welcome{margin-top:18px;padding:26px 20px 20px;border-radius:15px;background:#0a2939;text-align:center;color:#f4fbfc}
+.signup-welcome[hidden]{display:none}
+.signup-welcome .welcome-check{width:38px;height:38px;display:grid;place-items:center;margin:0 auto 13px;border:2px solid #35d4e5;border-radius:50%;color:#35d4e5;font-size:22px;font-weight:800}
+.signup-welcome h2{margin:0 0 9px;font:800 21px Manrope}
+.signup-welcome p{margin:0 0 17px;color:#bfd0d8;font-size:12px;line-height:1.6}
+.welcome-account-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;text-decoration:none}
+.auth-message.is-pending{padding:10px 12px;border:1px solid #c4e7ec;border-radius:9px;background:#effbfc;color:#176d7a}
+@media(max-width:760px){.signup-benefits{margin-top:18px;gap:10px}.signup-welcome{padding:22px 16px}}
