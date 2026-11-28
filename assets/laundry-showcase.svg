@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 560" role="img" aria-labelledby="t d">
+<title id="t">Premium garment care at Daksh Dry Cleaners</title><desc id="d">Fresh shirts on wooden hangers beside a steaming iron and neatly folded towels.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#123b56"/><stop offset=".55" stop-color="#071827"/><stop offset="1" stop-color="#06111e"/></linearGradient>
+ <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe0a0"/><stop offset=".45" stop-color="#a96a2a"/><stop offset="1" stop-color="#f2c477"/></linearGradient>
+ <linearGradient id="shirt" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#e9f3f8"/><stop offset="1" stop-color="#a9c5d8"/></linearGradient>
+ <linearGradient id="blueShirt" x2="1" y2="1"><stop stop-color="#b9e5f6"/><stop offset="1" stop-color="#3d7eaa"/></linearGradient>
+ <linearGradient id="iron" x2="0" y2="1"><stop stop-color="#e7f2f8"/><stop offset=".35" stop-color="#596d7e"/><stop offset="1" stop-color="#111e2b"/></linearGradient>
+ <linearGradient id="cloth" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#c6d9e6"/></linearGradient>
+ <filter id="shadow" x="-40%" y="-40%" width="180%" height="190%"><feGaussianBlur stdDeviation="12"/></filter>
+ <filter id="shine"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<rect x="12" y="12" width="656" height="536" rx="34" fill="url(#bg)" stroke="#3a7891" stroke-opacity=".55"/>
+<circle cx="490" cy="165" r="175" fill="#087fa2" opacity=".13" filter="url(#shadow)"/>
+<path d="M45 98H635" stroke="url(#gold)" stroke-width="8" stroke-linecap="round"/>
+<path d="M65 99V75M615 99V75" stroke="#b88b50" stroke-width="5" stroke-linecap="round"/>
+<g fill="none" stroke="url(#gold)" stroke-width="5" stroke-linecap="round">
+ <path d="M135 100v17q0 9-9 14"/><path d="M235 100v17q0 9-9 14"/><path d="M335 100v17q0 9-9 14"/><path d="M435 100v17q0 9-9 14"/><path d="M535 100v17q0 9-9 14"/>
+</g>
+<g class="shirt-sway shirt-back">
+ <path d="M126 133q9-12 28-12l19 18 18-18q20 0 29 12l30 35-23 25-14-14v177H130V179l-14 14-23-25Z" fill="#8baec5" stroke="#d5e7f0" stroke-width="3"/>
+ <path d="M173 139l-9 34 18 18 18-18-9-34" fill="#dceaf2"/>
+</g>
+<g class="shirt-sway shirt-mid">
+ <path d="M226 133q9-12 28-12l19 18 18-18q20 0 29 12l30 35-23 25-14-14v177H230V179l-14 14-23-25Z" fill="url(#blueShirt)" stroke="#d9effb" stroke-width="3"/>
+ <path d="M273 139l-9 34 18 18 18-18-9-34" fill="#e8f6fd"/>
+ <path d="M282 191v148" stroke="#e8f6fd" stroke-width="2" opacity=".55"/>
+</g>
+<g class="shirt-sway shirt-front">
+ <path d="M329 133q9-12 28-12l19 18 18-18q20 0 29 12l30 35-23 25-14-14v177H333V179l-14 14-23-25Z" fill="url(#shirt)" stroke="#fff" stroke-width="3"/>
+ <path d="M376 139l-9 34 18 18 18-18-9-34" fill="#f8fcff" stroke="#b6cad8" stroke-width="1.5"/>
+ <path d="M385 191v148" stroke="#b7cad7" stroke-width="2"/>
+ <circle cx="385" cy="222" r="3" fill="#7f9aaa"/><circle cx="385" cy="254" r="3" fill="#7f9aaa"/><circle cx="385" cy="286" r="3" fill="#7f9aaa"/>
+</g>
+<g class="shirt-sway shirt-side">
+ <path d="M438 133q9-12 28-12l19 18 18-18q20 0 29 12l30 35-23 25-14-14v177H442V179l-14 14-23-25Z" fill="#d9eaf3" stroke="#fff" stroke-width="3"/>
+ <path d="M485 139l-9 34 18 18 18-18-9-34" fill="#f8fcff"/>
+</g>
+<ellipse cx="360" cy="450" rx="255" ry="30" fill="#000" opacity=".42" filter="url(#shadow)"/>
+<path d="M52 437q140-31 278-8 137-25 299 7v68H52Z" fill="#0b1e2d" stroke="#54798c" stroke-width="2"/>
+<path d="M74 435q145-24 256-5l-14 39q-119 19-246-1Z" fill="url(#cloth)"/>
+<path d="M94 423q128-22 240-4l-12 27q-122 17-234-1Z" fill="#f8fcff"/>
+<path d="M355 431q115-23 233-4l-11 39q-112 18-225-2Z" fill="#d7e8f1"/>
+<g class="iron-steam" fill="none" stroke="#e8faff" stroke-width="5" stroke-linecap="round" opacity=".75">
+ <path class="steam-one" d="M458 374q-23-22 0-43t0-44"/><path class="steam-two" d="M495 366q-20-24 4-47t0-42"/><path class="steam-three" d="M529 374q-18-20 3-39t0-38"/>
+</g>
+<g transform="translate(405 343) rotate(-7)">
+ <path d="M8 76q11-54 72-70 35-9 68 10l51 34q18 12 13 31H8Z" fill="url(#iron)" stroke="#a9c3d4" stroke-width="3"/>
+ <path d="M83 12q8-37 45-40 36-2 50 27l-16 12q-34-17-68 5Z" fill="#152c40" stroke="#9eb5c5" stroke-width="4"/>
+ <path d="M28 77h176" stroke="#e7f3f9" stroke-width="4" opacity=".8"/>
+ <path d="M45 60q61-19 121-4" fill="none" stroke="#5dd7ef" stroke-width="4" opacity=".8"/>
+ <circle cx="143" cy="31" r="5" fill="#54d9f0"/>
+</g>
+<g fill="#7ee7f2"><circle cx="592" cy="300" r="3"/><circle cx="565" cy="272" r="2"/><circle cx="620" cy="340" r="2"/></g>
+<path d="M55 510h570" stroke="#4c8298" opacity=".35"/>
+<text x="55" y="526" fill="#9edbe8" font-family="Arial,sans-serif" font-size="11" letter-spacing="3">FRESHLY PRESSED · BEAUTIFULLY CARED FOR</text>
+</svg>
