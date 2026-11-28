@@ -195,3 +195,11 @@ mark.price-match{background:#b7f5dd;color:#063b2a;border-radius:3px;padding:0 2p
 .submit-button{width:100%;justify-content:center}
 .form-disclaimer{font-size:11px;line-height:1.55}
 @media(max-width:600px){.live-order-summary{padding:15px 13px}.summary-heading strong{font-size:14px}.summary-total strong:last-child{font-size:22px}}
+
+/* Evidence-based order reassurance: show only claims supported by the current flow */
+.order-trust-indicators{display:flex;flex-wrap:wrap;gap:12px 22px;list-style:none;padding:0;margin:16px 0 0}
+.order-trust-indicators li{display:flex;align-items:center;gap:9px;min-width:0;color:#55717f}
+.trust-icon{width:25px;height:25px;flex:0 0 25px;display:grid;place-items:center;border:1px solid #a7d9d8;border-radius:50%;color:#078e83;font-size:14px;font-weight:800}
+.order-trust-indicators strong{display:block;color:#284c5d;font-size:11px;font-weight:800}
+.order-trust-indicators small{display:block;margin-top:2px;color:#718995;font-size:10px;line-height:1.4}
+@media(max-width:600px){.order-trust-indicators{display:grid;gap:10px}}
