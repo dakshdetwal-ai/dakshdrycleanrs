@@ -96,3 +96,19 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;op
 @media(max-width:850px){.laundry-hero-art{height:420px}.laundry-showcase{max-height:420px}}
 @media(max-width:680px){.laundry-hero-art{height:auto;min-height:280px;width:100%;margin:22px 0 0}.laundry-showcase{width:110%;max-width:none;max-height:none}.showcase-caption{bottom:-4px;right:2%;font-size:8px}}
 @media(prefers-reduced-motion:reduce){.laundry-showcase,.caption-dot{animation:none}}
+
+/* Service cards: value-led rows inspired by the approved reference */
+.service-list{gap:0;border:1px solid #dce7e9;border-radius:18px;overflow:hidden;background:#fff}
+.service-list .service-card{grid-template-columns:86px minmax(0,1fr) 28px;gap:16px;min-height:126px;padding:15px 18px;border:0;border-radius:0;box-shadow:none;background:transparent;position:relative}
+.service-list .service-card+.service-card{border-top:1px solid #e8eff0}
+.service-photo{width:84px;height:84px;object-fit:cover;border-radius:17px;background:#eaf1f4}
+.service-card-copy{min-width:0}
+.service-card-copy .service-number{display:block;font-size:9px;letter-spacing:.13em;color:#8095a2;font-weight:700}
+.service-card-copy h3{font:800 17px "Manrope",sans-serif;margin:4px 0 3px;color:#102c3e}
+.service-price{display:block;color:#00a95c;font:800 23px "Manrope",sans-serif;line-height:1.25;margin:3px 0}
+.service-price small{font-size:14px;font-weight:600}
+.service-card-copy p{font-size:12px;line-height:1.5;color:#647985;margin:3px 0 0}
+.service-arrow{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;color:#54717f;font-size:22px;text-decoration:none;transition:background .2s,color .2s,transform .2s}
+.service-arrow:hover{background:#e2f8f5;color:#009e68;transform:translate(2px,-2px)}
+.service-list .service-card:hover{transform:none;box-shadow:inset 3px 0 #17c7c4;background:#fbfefe}
+@media(max-width:600px){.service-list .service-card{grid-template-columns:70px minmax(0,1fr) 24px;gap:12px;min-height:108px;padding:13px 12px}.service-photo{width:68px;height:68px;border-radius:14px}.service-card-copy h3{font-size:15px}.service-price{font-size:20px}.service-card-copy p{font-size:11px}}
