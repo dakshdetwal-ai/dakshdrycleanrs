@@ -85,3 +85,14 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;op
 @media(max-width:850px){.main-nav{gap:12px;font-size:12px}.brand-logo{width:186px}}
 @media(max-width:680px){.site-header{padding:0 18px}.brand-logo{width:180px;height:62px}.main-nav{gap:14px}.main-nav .nav-order{display:block;text-align:center}.main-nav .nav-secondary{text-align:center}}
 @media(prefers-reduced-motion:reduce){.site-header,.main-nav .nav-order{transition:none}}
+
+/* Real laundry imagery replaces the abstract floating shapes */
+.laundry-hero-art{height:490px;display:flex;align-items:center;justify-content:center;position:relative;isolation:isolate}
+.laundry-showcase{display:block;width:min(100%,620px);height:auto;max-height:490px;object-fit:contain;filter:drop-shadow(0 28px 35px rgba(0,0,0,.28));animation:showcaseFloat 7s ease-in-out infinite}
+.showcase-caption{position:absolute;bottom:4px;right:3%;display:flex;align-items:center;gap:9px;color:#a9dce7;font-size:9px;font-weight:700;letter-spacing:.2em}
+.caption-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:captionPulse 2s ease-in-out infinite}
+@keyframes showcaseFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes captionPulse{0%,100%{opacity:.55;box-shadow:0 0 5px var(--cyan)}50%{opacity:1;box-shadow:0 0 15px var(--cyan)}}
+@media(max-width:850px){.laundry-hero-art{height:420px}.laundry-showcase{max-height:420px}}
+@media(max-width:680px){.laundry-hero-art{height:auto;min-height:280px;width:100%;margin:22px 0 0}.laundry-showcase{width:110%;max-width:none;max-height:none}.showcase-caption{bottom:-4px;right:2%;font-size:8px}}
+@media(prefers-reduced-motion:reduce){.laundry-showcase,.caption-dot{animation:none}}
