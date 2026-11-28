@@ -20,40 +20,125 @@
   }
 
   const signupForm = $("#signupForm");
-  if (signupForm) signupForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    const form = new FormData(signupForm);
-    const fullName = String(form.get("full_name") || "").trim();
-    const phone = String(form.get("phone") || "").trim();
-    const email = String(form.get("email") || "").trim().toLowerCase();
-    const password = String(form.get("password") || "");
-    const confirm = String(form.get("confirm_password") || "");
+  if (signupForm) {
+    const passwordInput = $('input[name="password"]', signupForm);
+    const confirmInput = $('input[name="confirm_password"]', signupForm);
+    const phoneInput = $('input[name="phone"]', signupForm);
+    const signupButton = $('button[type="submit"]', signupForm);
     const message = $("#authMessage");
-    const button = $('button[type="submit"]', signupForm);
-    if (password.length < 8) return showMessage(message, "Use a password with at least 8 characters.", true);
-    if (password !== confirm) return showMessage(message, "The passwords do not match.", true);
-    if (!form.get("terms")) return showMessage(message, "Please accept the account terms to continue.", true);
-    setBusy(button, true, "Create account →");
-    showMessage(message, "Creating your customer account…");
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email, password,
-        options: {
-          data: { full_name: fullName, phone },
-          emailRedirectTo: redirectTo("login.html?verified=1")
-        }
-      });
-      if (error) throw error;
-      if (data.session) {
-        window.location.href = "dashboard.html";
-        return;
+    const strengthText = $("#passwordStrengthText");
+    const strengthBar = $("#passwordStrengthBar");
+    const matchText = $("#passwordMatch");
+    let signupInProgress = false;
+
+    document.querySelectorAll("[data-password-toggle]").forEach(toggle => toggle.addEventListener("click", () => {
+      const field = document.getElementById(toggle.dataset.passwordToggle);
+      if (!field) return;
+      const reveal = field.type === "password";
+      field.type = reveal ? "text" : "password";
+      toggle.textContent = reveal ? "Hide" : "Show";
+      toggle.setAttribute("aria-label", reveal ? "Hide password" : "Show password");
+      toggle.setAttribute("aria-pressed", String(reveal));
+    }));
+
+    function updatePasswordStrength() {
+      const value = passwordInput?.value || "";
+      let score = 0;
+      if (value.length >= 8) score++;
+      if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+      if (/\d/.test(value)) score++;
+      if (/[^A-Za-z0-9]/.test(value)) score++;
+      const labels = ["Too short", "Weak", "Fair", "Good", "Strong"];
+      if (strengthText) strengthText.textContent = value ? labels[score] : "Use 8+ characters with a mix of letters and numbers.";
+      if (strengthBar) {
+        strengthBar.style.width = (score * 25) + "%";
+        strengthBar.dataset.level = String(score);
       }
-      showMessage(message, "Account request created. Check your email and confirm your address, then sign in.");
-      signupForm.reset();
-    } catch (error) {
-      showMessage(message, error.message || "Could not create your account. Please try again.", true);
-    } finally { setBusy(button, false, "Create account →"); }
-  });
+    }
+    function updatePasswordMatch() {
+      if (!matchText || !confirmInput) return;
+      if (!confirmInput.value) { matchText.textContent = ""; matchText.className = "field-hint"; return; }
+      const matches = confirmInput.value === (passwordInput?.value || "");
+      matchText.textContent = matches ? "Passwords match." : "Passwords do not match.";
+      matchText.className = matches ? "field-hint is-valid" : "field-hint is-invalid";
+    }
+    passwordInput?.addEventListener("input", () => { updatePasswordStrength(); updatePasswordMatch(); });
+    confirmInput?.addEventListener("input", updatePasswordMatch);
+    updatePasswordStrength();
+
+    signupForm.querySelectorAll("input").forEach(input => input.addEventListener("input", () => {
+      input.removeAttribute("aria-invalid");
+      if (message) { message.textContent = ""; message.classList.remove("is-error"); }
+    }));
+
+    signupForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (signupInProgress) return;
+      const form = new FormData(signupForm);
+      const fullName = String(form.get("full_name") || "").trim();
+      const rawPhone = String(form.get("phone") || "").trim();
+      const phoneDigits = rawPhone.replace(/\D/g, "");
+      const phone = phoneDigits.length === 12 && phoneDigits.startsWith("91") ? phoneDigits.slice(2) : phoneDigits;
+      const email = String(form.get("email") || "").trim().toLowerCase();
+      const password = String(form.get("password") || "");
+      const confirm = String(form.get("confirm_password") || "");
+      if (!fullName) { showMessage(message, "Please enter your full name.", true); return; }
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        phoneInput?.setAttribute("aria-invalid", "true");
+        showMessage(message, "Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9.", true);
+        phoneInput?.focus(); return;
+      }
+      if (password.length < 8) { showMessage(message, "Use a password with at least 8 characters.", true); passwordInput?.focus(); return; }
+      if (password !== confirm) {
+        confirmInput?.setAttribute("aria-invalid", "true");
+        showMessage(message, "Your passwords don't match. Please check both fields.", true);
+        confirmInput?.focus(); return;
+      }
+      if (!form.get("terms")) { showMessage(message, "Please accept the account terms to continue.", true); return; }
+
+      signupInProgress = true;
+      signupButton?.classList.add("is-loading");
+      if (signupButton) {
+        signupButton.disabled = true;
+        signupButton.querySelector(".signup-button-label").textContent = "Creating account…";
+      }
+      showMessage(message, "Creating your customer account…");
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email, password,
+          options: {
+            data: { full_name: fullName, phone },
+            emailRedirectTo: redirectTo("login.html?verified=1")
+          }
+        });
+        if (error) throw error;
+        if (data.session) {
+          window.location.href = "dashboard.html";
+          return;
+        }
+        showMessage(message, "Your signup request has been received. Check your email for a verification link, then sign in.");
+        signupForm.reset();
+        updatePasswordStrength();
+        updatePasswordMatch();
+      } catch (error) {
+        const raw = String(error?.message || "").toLowerCase();
+        const friendly = raw.includes("already registered") || raw.includes("user already exists")
+          ? "An account with this email may already exist. Try signing in or resetting your password."
+          : raw.includes("password") && raw.includes("weak")
+            ? "Please choose a stronger password."
+            : "We couldn't create your account right now. Please check your details and try again.";
+        showMessage(message, friendly, true);
+        message?.classList.add("is-error");
+      } finally {
+        signupInProgress = false;
+        signupButton?.classList.remove("is-loading");
+        if (signupButton) {
+          signupButton.disabled = false;
+          signupButton.querySelector(".signup-button-label").textContent = "Create account";
+        }
+      }
+    });
+  }
 
   const loginForm = $("#loginForm");
   if (loginForm) {
