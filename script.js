@@ -1,5 +1,3 @@
-const WORKER_ORDER_URL = "https://daksh-dry-cleaners-api.dakshdetwal10.workers.dev/api/order";
-
 const menuToggle = document.getElementById("menuToggle");
 const mainNav = document.getElementById("mainNav");
 menuToggle?.addEventListener("click", () => {
@@ -11,7 +9,8 @@ mainNav?.querySelectorAll("a").forEach(link => link.addEventListener("click", ()
   menuToggle?.setAttribute("aria-expanded", "false");
 }));
 
-document.getElementById("year").textContent = new Date().getFullYear();
+const year = document.getElementById("year");
+if (year) year.textContent = new Date().getFullYear();
 
 // Price list filters: category tabs and item search work together.
 const priceSearch = document.getElementById("priceSearch");
@@ -20,7 +19,7 @@ const categoryTabs = [...document.querySelectorAll(".category-tab")];
 let activeCategory = "all";
 
 function filterPrices() {
-  const query = (priceSearch.value || "").trim().toLowerCase();
+  const query = (priceSearch?.value || "").trim().toLowerCase();
   priceGroups.forEach(group => {
     const categoryMatches = activeCategory === "all" || group.dataset.group === activeCategory;
     const searchMatches = !query || group.textContent.toLowerCase().includes(query);
@@ -32,42 +31,73 @@ categoryTabs.forEach(button => button.addEventListener("click", () => {
   categoryTabs.forEach(tab => tab.classList.toggle("active", tab === button));
   filterPrices();
 }));
-priceSearch.addEventListener("input", filterPrices);
+priceSearch?.addEventListener("input", filterPrices);
 
-// Order requests are sent to the existing Cloudflare Worker endpoint.
-// No price is calculated here because inspection-based items need confirmation.
+// Guest pickup requests use the same Supabase orders table as dashboard requests.
+// RLS deliberately requires an authenticated account, so guest users are directed to sign in.
 const orderForm = document.getElementById("orderForm");
 const formMessage = document.getElementById("formMessage");
-orderForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  const submitButton = orderForm.querySelector('button[type="submit"]');
-  submitButton.disabled = true;
-  submitButton.textContent = "Sending request…";
-  formMessage.textContent = "Sending your request securely…";
-  formMessage.style.color = "#607486";
 
-  const data = Object.fromEntries(new FormData(orderForm).entries());
-  data.requestType = "Laundry pickup / service request";
-  data.status = "Requested";
+if (orderForm) {
+  orderForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const submitButton = orderForm.querySelector('button[type="submit"]');
+    const show = (message, error = false) => {
+      formMessage.textContent = message;
+      formMessage.style.color = error ? "#b54747" : "#167d72";
+    };
 
-  try {
-    const response = await fetch(WORKER_ORDER_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    let result = {};
-    try { result = await response.json(); } catch (_) {}
-    if (!response.ok) throw new Error(result.error || "The request could not be sent.");
-    formMessage.textContent = "Request received! Our team will contact you to confirm the details.";
-    formMessage.style.color = "#167d72";
-    orderForm.reset();
-  } catch (error) {
-    console.error("Order request error:", error);
-    formMessage.textContent = "We couldn't send the request. Please try again or contact the shop directly.";
-    formMessage.style.color = "#b54747";
-  } finally {
-    submitButton.disabled = false;
-    submitButton.innerHTML = 'Send request <span>→</span>';
-  }
-});
+    const config = window.dakshSupabase;
+    if (!config) {
+      show("The order service is unavailable right now. Please try again later.", true);
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending request…";
+    show("Checking your customer account…");
+
+    try {
+      const { data: { session }, error: sessionError } = await config.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!session) {
+        const next = new URL("login.html", window.location.href);
+        next.searchParams.set("next", "dashboard.html#newOrder");
+        show("Please sign in to submit a pickup request. Redirecting you to sign in…");
+        window.location.href = next.toString();
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(orderForm).entries());
+      const qty = Number(data.quantity);
+      if (!Number.isInteger(qty) || qty < 1) throw new Error("Enter a valid quantity.");
+
+      const serviceMap = {
+        "Ironing": "Ironing",
+        "Washing + ironing": "Washing + ironing",
+        "Dry cleaning": "Dry cleaning",
+        "Need advice": "Need advice"
+      };
+      const item = String(data.itemType || "").trim();
+      const { error } = await config.from("orders").insert({
+        user_id: session.user.id,
+        item_description: item,
+        service: serviceMap[data.service] || data.service,
+        quantity: qty,
+        pickup_date: data.pickupDate || null,
+        address: String(data.address || "").trim(),
+        notes: [data.notes ? String(data.notes).trim() : "", "Customer: " + String(data.name || "").trim(), "Phone: " + String(data.mobile || "").trim()].filter(Boolean).join("\\n")
+      });
+      if (error) throw error;
+
+      show("Request received! You can track it in your customer dashboard. Our team will contact you to confirm details.");
+      orderForm.reset();
+    } catch (error) {
+      console.error("Order request error:", error);
+      show(error.message || "We couldn't send your request. Please try again.", true);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = 'Send request <span>→</span>';
+    }
+  });
+}
