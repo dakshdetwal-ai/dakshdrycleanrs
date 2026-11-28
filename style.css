@@ -179,3 +179,19 @@ mark.price-match{background:#b7f5dd;color:#063b2a;border-radius:3px;padding:0 2p
 .add-garment-button{margin-top:12px;padding:9px 13px;border:1px dashed #69bfc4;border-radius:9px;background:#eaf9f8;color:#087d82;font-size:11px;font-weight:800;cursor:pointer}
 .add-garment-button:hover{background:#d9f4f2}
 @media(max-width:600px){.garment-builder{padding:12px}.garment-entry{grid-template-columns:1fr 1fr;gap:9px}.garment-entry label:nth-child(3){grid-column:1}.remove-garment{grid-column:2;justify-self:end;align-self:end}.garment-builder-heading strong{font-size:14px}}
+
+.live-order-summary{margin:18px 0 16px;padding:18px 17px;border:1px solid #d8e8eb;border-radius:15px;background:#f0f7f9;color:#17384b}
+.summary-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.summary-heading strong{font:800 15px "Manrope",sans-serif;color:#17384b}
+.summary-heading span{font-size:9px;font-weight:800;letter-spacing:.14em;color:#078d9a}
+.summary-lines{display:grid;gap:9px;min-height:26px}
+.summary-line{display:flex;justify-content:space-between;gap:14px;color:#526e7d;font-size:12px;line-height:1.4}
+.summary-line strong{color:#365666;white-space:nowrap;font-weight:700}
+.summary-empty{margin:0;color:#718995;font-size:12px}
+.summary-total{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:15px;padding-top:13px;border-top:1px solid #d4e3e7}
+.summary-total strong:first-child{font-size:13px;color:#234657}
+.summary-total strong:last-child{font:800 24px "Manrope",sans-serif;color:#009eae}
+.summary-disclaimer{margin:10px 0 0;color:#7b909a;font-size:10px;line-height:1.55}
+.submit-button{width:100%;justify-content:center}
+.form-disclaimer{font-size:11px;line-height:1.55}
+@media(max-width:600px){.live-order-summary{padding:15px 13px}.summary-heading strong{font-size:14px}.summary-total strong:last-child{font-size:22px}}
