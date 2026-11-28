@@ -429,8 +429,13 @@
 
   async function loadOrders(userId) {
     const container = $("#ordersList");
-    const { data, error } = await supabase.from("orders").select("id,item_description,service,quantity,pickup_date,status,created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(30);
+    const { data, error } = await supabase.from("orders")
+      .select("id,item_description,service,quantity,pickup_date,status,created_at,address,notes")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(30);
     if (error) throw error;
+
     const totalOrders = data.length;
     const completedOrders = data.filter(order => String(order.status || "").trim().toLowerCase() === "completed").length;
     const pendingOrders = data.filter(order => {
@@ -443,18 +448,88 @@
     if (totalNode) totalNode.textContent = String(totalOrders).padStart(2, "0");
     if (pendingNode) pendingNode.textContent = String(pendingOrders).padStart(2, "0");
     if (completedNode) completedNode.textContent = String(completedOrders).padStart(2, "0");
-    // The current orders table has no amount/paid column, so spending must not be guessed.
+    // Prices are not stored on the current orders table; never estimate customer spending.
     const spendingNode = $("#statTotalSpending");
     if (spendingNode) spendingNode.textContent = "—";
-    if (!data.length) { container.innerHTML = '<div class="empty-state">No orders yet. Your pickup requests will appear here.</div>'; return; }
-    container.replaceChildren(...data.map(order => {
-      const card = document.createElement("article"); card.className = "dash-item";
-      const title = document.createElement("strong"); title.textContent = order.item_description;
-      const details = document.createElement("small"); details.textContent = order.service + " · " + order.quantity + " piece(s)" + (order.pickup_date ? " · Pickup " + order.pickup_date : "");
-      const status = document.createElement("span"); status.className = "status-pill"; status.textContent = order.status;
-      card.append(title, details, status); return card;
-    }));
+
+    if (!data.length) {
+      container.innerHTML = `
+        <div class="orders-empty">
+          <svg class="orders-empty-art" viewBox="0 0 140 112" role="img" aria-label="Laundry basket illustration">
+            <path d="M25 42h90l-9 55H34z" fill="#e6f8fa" stroke="#1599aa" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M20 42h100M39 53l5 35m19-35 2 35m20-35-2 35m20-35-5 35" fill="none" stroke="#1599aa" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M45 39c-8-12 7-20 16-9 5-16 25-14 25 1 12-8 25 3 18 12" fill="#35d4e5" stroke="#1599aa" stroke-width="2"/>
+            <path d="M53 28c-2-8 3-13 10-15m20 8c5-7 12-7 17-4" fill="none" stroke="#1599aa" stroke-width="2" stroke-linecap="round"/>
+            <path d="M17 101h106" stroke="#d5e7eb" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <h3>No orders yet!</h3>
+          <p>Your garment care journey starts here. Place your first pickup request and we'll take it from there.</p>
+          <a href="#newOrder">Place Your First Order <span aria-hidden="true">&nbsp;→</span></a>
+        </div>`;
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    data.forEach(order => {
+      const card = document.createElement("article");
+      card.className = "order-card";
+
+      const top = document.createElement("div");
+      top.className = "order-card-top";
+      const headingWrap = document.createElement("div");
+      const reference = document.createElement("div");
+      reference.className = "order-reference";
+      reference.textContent = "ORDER #" + String(order.id || "").replace(/-/g, "").slice(0, 8).toUpperCase();
+      const title = document.createElement("h3");
+      title.textContent = order.item_description || "Laundry order";
+      headingWrap.append(reference, title);
+
+      const status = document.createElement("span");
+      status.className = "status-pill";
+      status.textContent = order.status || "Pending";
+      top.append(headingWrap, status);
+
+      const meta = document.createElement("div");
+      meta.className = "order-meta";
+      const submitted = order.created_at ? new Date(order.created_at).toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"}) : "Date unavailable";
+      [submitted, order.service || "Service not specified", String(order.quantity || 0) + " piece(s)"].forEach(value => {
+        const item = document.createElement("span");
+        item.textContent = value;
+        meta.append(item);
+      });
+      if (order.pickup_date) {
+        const pickup = document.createElement("span");
+        pickup.textContent = "Pickup: " + new Date(order.pickup_date + "T00:00:00").toLocaleDateString("en-IN", {day:"numeric",month:"short",year:"numeric"});
+        meta.append(pickup);
+      }
+
+      const bottom = document.createElement("div");
+      bottom.className = "order-card-bottom";
+      const price = document.createElement("span");
+      price.className = "order-price";
+      price.textContent = "Price: To be confirmed";
+      bottom.append(price);
+
+      const details = document.createElement("details");
+      details.className = "order-details";
+      const summary = document.createElement("summary");
+      summary.textContent = "View details";
+      details.append(summary);
+      [["Service", order.service], ["Garments", order.item_description], ["Quantity", order.quantity], ["Pickup address", order.address], ["Notes", order.notes]].forEach(([label, value]) => {
+        if (value === null || value === undefined || String(value).trim() === "") return;
+        const line = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+        line.append(strong, document.createTextNode(String(value)));
+        details.append(line);
+      });
+
+      card.append(top, meta, bottom, details);
+      fragment.append(card);
+    });
+    container.replaceChildren(fragment);
   }
+
 
   async function loadTickets(userId) {
     const container = $("#ticketsList");
