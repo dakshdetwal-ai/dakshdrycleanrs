@@ -93,3 +93,12 @@ body::before{content:"";position:fixed;z-index:-1;inset:-20%;pointer-events:none
 .welcome-account-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;text-decoration:none}
 .auth-message.is-pending{padding:10px 12px;border:1px solid #c4e7ec;border-radius:9px;background:#effbfc;color:#176d7a}
 @media(max-width:760px){.signup-benefits{margin-top:18px;gap:10px}.signup-welcome{padding:22px 16px}}
+
+/* Fix signup benefit text inheriting the circular icon styles */
+.auth-story .signup-benefits{display:grid;grid-template-columns:1fr;gap:14px;margin-top:26px;width:100%;max-width:440px}
+.auth-story .signup-benefits>div{display:grid;grid-template-columns:28px minmax(0,1fr);align-items:start;gap:12px;width:100%;min-width:0}
+.auth-story .signup-benefits>div>span:first-child{width:28px;height:28px;flex:0 0 28px;border:1px solid #2b6275;border-radius:50%;display:grid;place-items:center;color:var(--cyan)}
+.auth-story .signup-benefits>div>span:last-child{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:auto;height:auto;min-width:0;padding:0;border:0;border-radius:0;background:transparent;place-items:initial;white-space:normal;overflow-wrap:anywhere}
+.auth-story .signup-benefits strong{display:block;width:auto;color:#e6f5f8;font-size:13px;line-height:1.35;font-weight:800}
+.auth-story .signup-benefits small{display:block;width:auto;color:#a8bdc9;font-size:11px;line-height:1.5;font-weight:400}
+@media(max-width:760px){.auth-story .signup-benefits{display:grid;gap:11px;margin-top:18px}.auth-story .signup-benefits>div{grid-template-columns:28px minmax(0,1fr)}}
